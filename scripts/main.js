@@ -8,13 +8,13 @@ let background;
 
 function setup() {
   createCanvas(windowWidth / 2, windowHeight / 2);
-  background = loadImage('http://www.guibingzhuche.com/data/out/173/1384241.png');
+  //background = loadImage('http://www.guibingzhuche.com/data/out/173/1384241.png');
 }
 
 function draw() {
   // put code here that needs to run at every image update
   clear();
-  background(background);
+  //background(background);
   ellipse(mouseX, mouseY, 50, 50);
 }
 
