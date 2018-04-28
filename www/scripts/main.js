@@ -13,7 +13,6 @@ function init() {
 
     const errorCategory = Math.floor(errorCode / 100);
     const errorNumber = errorCode % 100;
-    console.log(errorNumber);
 
     switch (errorCategory) {
       case 4:
@@ -109,4 +108,4 @@ const errorDescriptions500 = [
   'This status code, while used by many servers, is not specified in any RFCs.',
   'The policy for accessing the resource has not been met in the request.',
   'This indicates that the client needs to authenticate to gain network access.'
-]
+];
