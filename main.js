@@ -13,6 +13,8 @@ function setup() {
 
 function draw() {
   // put code here that needs to run at every image update
+  clear();
+  ellipse(50, 50, 50, 50);
 }
 
 function windowResized() {
