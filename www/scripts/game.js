@@ -123,11 +123,9 @@ function windowResized() {
 }
 
 function mouseClicked() {
-  getMouseAngle();
+  console.log(getMouseAngle());
 }
 
 function getMouseAngle() {
-  console.log(mouseX - 400);
-  console.log(height - mouseY);
-  console.log(atan((mouseX - 400) / (height - mouseY)) * 180 / Math.PI);
+  return atan((mouseX - 400) / (height - mouseY)) * 180 / Math.PI;
 }
