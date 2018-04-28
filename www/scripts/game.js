@@ -41,7 +41,7 @@ function preload() {
   leftBirdSpriteImage = loadImage('./res/images/leftbird.gif');
 
   backgroundImage = loadImage('./res/images/background.png');
-  shakerSprite = loadImage('./res/images/shaker.jpg');
+  shakerSprite = loadImage('./res/images/shaker.png');
 }
 
 function setup() {
