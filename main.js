@@ -30,7 +30,7 @@ const options = {
   cert: fs.readFileSync(path.join(__dirname, 'server/ssl/cert.crt')),
   passphrase: 'iManT'
 };
-  // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const port = 443;
 https.createServer(options, app).listen(port);

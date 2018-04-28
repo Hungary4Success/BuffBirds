@@ -20,10 +20,14 @@ let crosshairImage;
 let canvasWidth;
 let canvasHeight;
 
+function getCanvasDimensions() {
+  return { width: 800, height: 500 };
+}
+
 function setup() {
-  canvasWidth = windowWidth / 2;
-  canvasHeight = windowHeight / 2;
-  createCanvas(canvasWidth, canvasHeight);
+  const { width, height } = getCanvasDimensions();
+  const canvas = createCanvas(width, height);
+  canvas.parent('container');
   noCursor();
   backgroundImage = loadImage('./res/images/background.png');
   birdVelocityXMean = 0.1;
@@ -80,9 +84,8 @@ function draw() {
 
 function windowResized() {
   // put code here that needs to run in the beginning once
-  canvasWidth = windowWidth / 2;
-  canvasHeight = windowHeight / 2;
-  resizeCanvas(canvasWidth, canvasHeight);
+  const { width, height } = getCanvasDimensions();
+  resizeCanvas(width, height);
 }
 
 function onMouseClick() {
