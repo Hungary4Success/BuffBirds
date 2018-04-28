@@ -17,9 +17,17 @@ body {
 }
 
 #title {
-  margin-bottom: 15px
+  margin-bottom: 15px;
+  opacity: 0;
 }
 
-.lead {
-  margin-bottom: 50px
+.p5Canvas {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+#description {
+  margin-bottom: 50px;
+  opacity: 0;
 }
