@@ -17,12 +17,13 @@ let birdVelocityXMean;
 let birdVelocityXSTD;
 let birdVelocityYMean;
 let birdVelocityYSTD;
+let backgroundImage;
 
 function setup() {
   canvasWidth = windowWidth / 2;
   canvasHeight = windowHeight / 2;
   createCanvas(canvasWidth, canvasHeight);
-  background = loadImage('./res/images/background.png');
+  backgroundImage = loadImage('./res/images/background.png');
   birdVelocityXMean = 0.2;
   birdVelocityXSTD = birdVelocityXMean - 0.00001;
   birdVelocityYMean = 0;
@@ -36,7 +37,7 @@ function setup() {
 function draw() {
   // put code here that needs to run at every image update
   clear();
-  //background(background);
+  background(backgroundImage);
   ellipse(mouseX, mouseY, 50, 50);
   let radius = 50;
   ellipse(birdPositionsX[0], birdPositionsY[0], radius);
