@@ -14,14 +14,19 @@ let birdVelocityXMean;
 let birdVelocityXSTD;
 let birdVelocityYMean;
 let birdVelocityYSTD;
+let birdSprite;
 let backgroundImage;
-let birdNumber;
+let startBirdNumber;
 let crosshairImage;
 let canvasWidth;
 let canvasHeight;
 
 function getCanvasDimensions() {
   return { width: 800, height: 500 };
+}
+
+function preload() {
+  birdSprite = loadImage('./res/images/bird.gif');
 }
 
 function setup() {
@@ -34,14 +39,14 @@ function setup() {
   birdVelocityXSTD = birdVelocityXMean - 0.00001;
   birdVelocityYMean = 0;
   birdVelocityYSTD = 0.2;
-  birdNumber = 2;
-  birdPositionsX = [birdNumber];
-  birdPositionsX = [birdNumber];
-  birdPositionsY = [birdNumber];
-  birdVelocitiesX = [birdNumber];
-  birdVelocitiesY = [birdNumber];
+  startBirdNumber = 2;
+  birdPositionsX = [startBirdNumber];
+  birdPositionsX = [startBirdNumber];
+  birdPositionsY = [startBirdNumber];
+  birdVelocitiesX = [startBirdNumber];
+  birdVelocitiesY = [startBirdNumber];
 
-  for (let index = 0; index < birdNumber; index++) {
+  for (let index = 0; index < startBirdNumber; index++) {
     birdPositionsY[index] = randomGaussian(height / 2, height / 4);
     if (birdPositionsY[index] > height * 0.7) {
       birdPositionsY[index] = height * 0.6;
@@ -60,7 +65,7 @@ function draw() {
   const radius = 50;
 
   for (let index = 0; index < birdPositionsX.length; index++) {
-    ellipse(birdPositionsX[index], birdPositionsY[index], radius);
+    image(birdSprite, birdPositionsX[index], birdPositionsY[index]);
 
     birdPositionsX[index] += birdVelocitiesX[index];
     birdPositionsY[index] += birdVelocitiesY[index];
