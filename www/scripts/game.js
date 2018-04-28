@@ -6,6 +6,7 @@ function init() {
   console.log('Script started!');
 }
 
+let isRightBirds;
 let birdPositionsX;
 let birdPositionsY;
 let birdVelocitiesX;
@@ -14,7 +15,8 @@ let birdVelocityXMean;
 let birdVelocityXSTD;
 let birdVelocityYMean;
 let birdVelocityYSTD;
-let birdSprite;
+let leftBirdSprite;
+let rightBirdSprite;
 let backgroundImage;
 let startBirdNumber;
 let crosshairImage;
@@ -26,7 +28,8 @@ function getCanvasDimensions() {
 }
 
 function preload() {
-  birdSprite = loadGif('./res/images/bird.gif');
+  leftBirdSprite = loadGif('./res/images/leftbird.gif');
+  rightBirdSprite = loadGif('./res/images/rightbird.gif');
 }
 
 function setup() {
@@ -40,6 +43,7 @@ function setup() {
   birdVelocityYMean = 0;
   birdVelocityYSTD = 0.2;
   startBirdNumber = 2;
+  isRightBirds = [startBirdNumber];
   birdPositionsX = [startBirdNumber];
   birdPositionsX = [startBirdNumber];
   birdPositionsY = [startBirdNumber];
@@ -47,6 +51,12 @@ function setup() {
   birdVelocitiesY = [startBirdNumber];
 
   for (let index = 0; index < startBirdNumber; index++) {
+    if (random(0, 100) < 50) {
+      isRightBirds[index] = true;
+    } else {
+      isRightBirds[index] = false;
+    }
+    console.log(isRightBirds[index]);
     birdPositionsY[index] = randomGaussian(height / 2, height / 4);
     if (birdPositionsY[index] > height * 0.7) {
       birdPositionsY[index] = height * 0.6;
@@ -64,15 +74,23 @@ function draw() {
   background(backgroundImage);
 
   for (let index = 0; index < birdPositionsX.length; index++) {
-    image(birdSprite, birdPositionsX[index], birdPositionsY[index]);
+    if (isRightBirds[index]) {
+      image(rightBirdSprite, birdPositionsX[index], birdPositionsY[index]);
+    } else {
+      image(leftBirdSprite, birdPositionsX[index], birdPositionsY[index]);
+    }
 
-    birdPositionsX[index] -= birdVelocitiesX[index];
+    if (isRightBirds[index]) {
+      birdPositionsX[index] -= birdVelocitiesX[index];
+    } else {
+      birdPositionsX[index] += birdVelocitiesX[index];
+    }
     birdPositionsY[index] += birdVelocitiesY[index];
 
     birdVelocitiesX[index] += randomGaussian(birdVelocityXMean, birdVelocityXSTD);
     birdVelocitiesY[index] += randomGaussian(birdVelocityYMean, birdVelocityYSTD);
 
-    if (birdPositionsX[index] < -birdSprite.width) {
+    if (isRightBirds[index] && birdPositionsX[index] < -leftBirdSprite.width) {
       birdPositionsX[index] = width + 10;
       birdVelocitiesX[index] = 0;
       birdVelocitiesY[index] = 0;
