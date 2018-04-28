@@ -8,6 +8,7 @@ document.getElementById('root').addEventListener('load', init);
 
 function setup() {
   // put code here that needs to run in the beginning once
+  createCanvas()
 }
 
 function draw() {
