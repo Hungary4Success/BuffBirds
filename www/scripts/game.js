@@ -194,8 +194,10 @@ function draw() {
       if (
         abs((current.positionX + shakerSprite.width * current.scale / 2) - current.targetX) < shakerSprite.width * current.scale / 2 &&
         abs(current.positionY - current.targetY) < shakerSprite.height * current.scale / 8) {
-          if(collideRectRect(current.positionX, current.positionY, current.scale * shakerSprite.width, current.scale * shakerSprite.height, 0, 0, 100, 100)){
-            console.log('hit!');
+          for (let index = 0; index < birdPositionsX.length; index++) {
+            if(collideRectRect(current.positionX, current.positionY, current.scale * shakerSprite.width, current.scale * shakerSprite.height, birdPositionsX[index], birdPositionsY[index], 100, 100)){
+              console.log('hit!');
+            }
           }
           thrownShakers.splice(shaker, 1);
         console.log('at position');
