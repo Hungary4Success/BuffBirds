@@ -2,10 +2,6 @@
 
 'use strict';
 
-function init() {
-  console.log('Script started!');
-}
-
 let isRightBirds;
 let birdPositionsX;
 let birdPositionsY;
@@ -40,6 +36,7 @@ function preload() {
   rightBirdSprite = loadGif('./res/images/rightbird.gif');
   backgroundImage = loadImage('./res/images/background.png');
   shakerSprite = loadImage('./res/images/shaker.jpg');
+  crosshairImage = loadImage('./res/images/crosshair.png');
 }
 
 function setup() {
@@ -73,7 +70,6 @@ function setup() {
     birdVelocitiesX[index] = randomGaussian(birdVelocityXMean, birdVelocityXSTD);
     birdVelocitiesY[index] = randomGaussian(birdVelocityYMean, birdVelocityYSTD);
   }
-  crosshairImage = loadImage('./res/images/crosshair.png');
 }
 
 function draw() {
