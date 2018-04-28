@@ -23,7 +23,7 @@ app.use(compression());
 app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
 app.use(express.static(path.join(__dirname, 'www'), { index: false }));
 
-app.get('/', (request, response) => {
+app.get('/*', (request, response) => {
   console.log();
   console.log(`Request: ${request.originalUrl}`);
   response.sendFile(path.join(__dirname, '/www/index.html'));

@@ -5,27 +5,34 @@
 let isRightBirds;
 let birdPositionsX;
 let birdPositionsY;
+
 let birdVelocitiesX;
 let birdVelocitiesY;
 let birdVelocityXMean;
 let birdVelocityXSTD;
 let birdVelocityYMean;
 let birdVelocityYSTD;
+
 let leftBirdSprite;
 let leftBirdSpriteImage;
 let rightBirdSprite;
 let rightBirdSpriteImage;
 let backgroundImage;
-let startBirdNumber;
 let crosshairImage;
+
+let font;
+
 let canvasWidth;
 let canvasHeight;
 let thrownShakers;
 let shakerSprite;
 let mouseAngle;
 
-let font;
+const level = 0;
+
+let startBirdNumber;
 let score = 0;
+let shakerCount = 7;
 
 function Ammo(targetX, targetY, posX, posY, scale) {
   this.targetX = targetX;
@@ -40,14 +47,26 @@ function getCanvasDimensions() {
 }
 
 function preload() {
-  leftBirdSprite = loadGif('./res/images/leftbird.gif');
-  rightBirdSprite = loadGif('./res/images/rightbird.gif');
-  rightBirdSpriteImage = loadImage('./res/images/rightbird.gif');
-  leftBirdSpriteImage = loadImage('./res/images/leftbird.gif');
-  backgroundImage = loadImage('./res/images/background.png');
-  shakerSprite = loadImage('./res/images/shaker.png');
   crosshairImage = loadImage('./res/images/crosshair.png');
-  font = loadFont('./res/fonts/SFPixelate.ttf');
+  if (level === 0) {
+    leftBirdSprite = loadGif('./res/images/leftbird.gif');
+    rightBirdSprite = loadGif('./res/images/rightbird.gif');
+    rightBirdSpriteImage = loadImage('./res/images/rightbird.gif');
+    leftBirdSpriteImage = loadImage('./res/images/leftbird.gif');
+
+    backgroundImage = loadImage('./res/images/background.png');
+    shakerSprite = loadImage('./res/images/shaker.png');
+    font = loadFont('./res/fonts/SFPixelate.ttf');
+  } else if (level === 1) {
+    leftBirdSprite = loadGif('./res/images/leftbird.gif');
+    rightBirdSprite = loadGif('./res/images/rightbird.gif');
+    rightBirdSpriteImage = loadImage('./res/images/rightbird.gif');
+    leftBirdSpriteImage = loadImage('./res/images/leftbird.gif');
+
+    backgroundImage = loadImage('./res/images/background.png');
+    shakerSprite = loadImage('./res/images/shaker.png');
+    font = loadFont('./res/fonts/SFPixelate.ttf');
+  }
 }
 
 function setup() {
@@ -61,6 +80,7 @@ function setup() {
   birdVelocityXSTD = birdVelocityXMean - 0.00001;
   birdVelocityYMean = 0;
   birdVelocityYSTD = 0.2;
+
   startBirdNumber = 2;
   isRightBirds = [startBirdNumber];
   birdPositionsX = [startBirdNumber];
@@ -76,10 +96,12 @@ function setup() {
     } else {
       isRightBirds[index] = false;
     }
+
     birdPositionsY[index] = randomGaussian(height / 2, height / 4);
     if (birdPositionsY[index] > height * 0.7) {
       birdPositionsY[index] = height * 0.6;
     }
+
     birdPositionsX[index] = width + 10;
     birdVelocitiesX[index] = randomGaussian(birdVelocityXMean, birdVelocityXSTD);
     birdVelocitiesY[index] = randomGaussian(birdVelocityYMean, birdVelocityYSTD);
@@ -91,10 +113,34 @@ function draw() {
   clear();
   background(backgroundImage);
 
-  textSize(32);
-  textFont(font);
-  text(`SCORE: ${score}`, 15, 50);
+  if (shakerCount <= 0) {
+    // Draw end screen
+    textSize(60);
+    text('GAME OVER', 215, 225);
+    textSize(50);
+    text(`SCORE: ${score}`, 285, 300);
+  } else {
+    // Draw score
+    textSize(32);
+    textFont(font);
+    text(`SCORE: ${score}`, 15, 50);
 
+    // Draw current shaker
+    push();
+    translate(width / 2, height + 20);
+    rotate(mouseAngle);
+    image(shakerSprite, -75 / 2, -130, 75, 170);
+    pop();
+  }
+
+  // Draw available shakers
+  const startPositionX = 750;
+  for (let i = 0; i < shakerCount; i++) {
+    const positionX = startPositionX - i * 30;
+    image(shakerSprite, positionX, 15, 25, 50);
+  }
+
+  // Draw birds
   for (let index = 0; index < birdPositionsX.length; index++) {
     if (rightBirdSprite.loaded()) {
       if (isRightBirds[index]) {
@@ -134,15 +180,10 @@ function draw() {
       birdPositionsY[index] = 0;
     }
   }
+
   if (getMouseAngle() !== 'Mouse out of bounds') {
     mouseAngle = getMouseAngle();
   }
-
-  push();
-  translate(width / 2, height + 20);
-  rotate(mouseAngle);
-  image(shakerSprite, -75 / 2, -130, 75, 170);
-  pop();
 
   image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
 
@@ -182,6 +223,14 @@ function mouseClicked() {
     thrownShakers.push(new Ammo(mouseX, mouseY, width / 2 - (shakerSprite.width / 4), height, 0.5));
   }
   score++;
+  if (shakerCount === 0) {
+    shakerCount = 8;
+    score = 0;
+  } else {
+    score++;
+    shakerCount--;
+  }
+
   console.log(getMouseAngle());
 }
 
