@@ -22,6 +22,14 @@ let startBirdNumber;
 let crosshairImage;
 let canvasWidth;
 let canvasHeight;
+let thrownShakers;
+let shakerSprite;
+
+function Ammo(targetX, targetY, scale) {
+  this.targetX = targetX;
+  this.targetY = targetY;
+  this.scale = scale;
+}
 
 function getCanvasDimensions() {
   return { width: 800, height: 500 };
@@ -30,6 +38,8 @@ function getCanvasDimensions() {
 function preload() {
   leftBirdSprite = loadGif('./res/images/leftbird.gif');
   rightBirdSprite = loadGif('./res/images/rightbird.gif');
+  backgroundImage = loadImage('./res/images/background.png');
+  shakerSprite = loadImage('./res/images/shaker.jpg');
 }
 
 function setup() {
@@ -37,7 +47,6 @@ function setup() {
   const canvas = createCanvas(width, height);
   canvas.parent('container');
   noCursor();
-  backgroundImage = loadImage('./res/images/background.png');
   birdVelocityXMean = 0.1;
   birdVelocityXSTD = birdVelocityXMean - 0.00001;
   birdVelocityYMean = 0;
@@ -98,14 +107,14 @@ function draw() {
       birdVelocitiesX[index] = 0;
       birdVelocitiesY[index] = 0;
     }
-    if (birdPositionsY[index] > height * 0.7) {
-      birdPositionsY[index] = height * 0.7;
+    if (birdPositionsY[index] > height * 0.65) {
+      birdPositionsY[index] = height * 0.65;
     } else if (birdPositionsY[index] < 0) {
       birdPositionsY[index] = 0;
     }
   }
   image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
-}
+} // for index
 
 function windowResized() {
   // put code here that needs to run in the beginning once
@@ -113,6 +122,7 @@ function windowResized() {
   resizeCanvas(width, height);
 }
 
-function onMouseClick() {
-
+function mouseClicked() {
+  console.log(mouseX);
+  console.log(mouseY);
 }
