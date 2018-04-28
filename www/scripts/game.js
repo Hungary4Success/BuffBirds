@@ -114,6 +114,12 @@ function draw() {
     }
   }
   image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
+
+    push();
+    translate(width / 2, height + 20);
+    rotate(getMouseAngle());
+    image(shakerSprite, -75 / 2 ,-130 , 75, 170);
+    pop();
 } // for index
 
 function windowResized() {
@@ -128,7 +134,7 @@ function mouseClicked() {
 
 function getMouseAngle() {
   if (mouseX > 0 && mouseX < 800 && mouseY > 0 && mouseY < 500) {
-    return atan((mouseX - 400) / (height - mouseY)) * 180 / Math.PI;
+    return atan((mouseX - 400) / (height - mouseY));
   }
   else{
     return 'Mouse out of bounds';
