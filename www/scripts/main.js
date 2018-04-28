@@ -14,7 +14,7 @@ function setup() {
   canvasWidth = windowWidth / 2;
   canvasHeight = windowHeight / 2;
   createCanvas(canvasWidth, canvasHeight);
-  background = loadImage('./res/images/background.png');
+  backgroundImage = loadImage('./res/images/background.png');
 }
 
 function draw() {
