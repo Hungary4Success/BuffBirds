@@ -6,8 +6,6 @@ function init() {
   console.log('Script started!');
 }
 
-var canvasWidth;
-var canvasHeight;
 let birdPositionsX;
 let birdPositionsY;
 let birdVelocitiesX;
@@ -18,6 +16,9 @@ let birdVelocityYMean;
 let birdVelocityYSTD;
 let backgroundImage;
 let birdNumber;
+let crosshairImage;
+let canvasWidth;
+let canvasHeight;
 
 function setup() {
   canvasWidth = windowWidth / 2;
@@ -39,16 +40,16 @@ function setup() {
     birdPositionsY[index] = randomGaussian(height / 2, height / 4);
     birdPositionsX[index] = -10;
     birdVelocitiesX[index] = randomGaussian(birdVelocityXMean, birdVelocityXSTD);
-    birdVelocitiesY[index] = randomGaussian(birdVelocityYMean, birdVelocityYSTD);    
+    birdVelocitiesY[index] = randomGaussian(birdVelocityYMean, birdVelocityYSTD);
   }
+  crosshairImage = loadImage('./res/images/crosshair.png');
 }
 
 function draw() {
   // put code here that needs to run at every image update
   clear();
   background(backgroundImage);
-  ellipse(mouseX, mouseY, 50, 50);
-  let radius = 50;
+  const radius = 50;
 
   for (let index = 0; index < birdPositionsX.length; index++) {
     ellipse(birdPositionsX[index], birdPositionsY[index], radius);
@@ -64,11 +65,13 @@ function draw() {
       birdVelocitiesX[index] = 0;
       birdVelocitiesY[index] = 0;
     }
-    if (birdPositionsY[index] > height - (radius / 2))
+    if (birdPositionsY[index] > height - (radius / 2)) {
       birdPositionsY[index] = height - (radius / 2);
-    else if (birdPositionsY[index] < radius / 2)
+    } else if (birdPositionsY[index] < radius / 2) {
       birdPositionsY[index] = radius / 2;
+    }
   }
+  image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
 }
 
 function windowResized() {
