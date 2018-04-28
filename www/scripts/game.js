@@ -5,26 +5,32 @@
 let isRightBirds;
 let birdPositionsX;
 let birdPositionsY;
+
 let birdVelocitiesX;
 let birdVelocitiesY;
 let birdVelocityXMean;
 let birdVelocityXSTD;
 let birdVelocityYMean;
 let birdVelocityYSTD;
+
 let leftBirdSprite;
 let leftBirdSpriteImage;
 let rightBirdSprite;
 let rightBirdSpriteImage;
 let backgroundImage;
-let startBirdNumber;
 let crosshairImage;
+
+let font;
+
 let canvasWidth;
 let canvasHeight;
 let thrownShakers;
 let shakerSprite;
 let mouseAngle;
 
-let font;
+const level = 0;
+
+let startBirdNumber;
 let score = 0;
 let shakerCount = 7;
 
@@ -39,14 +45,25 @@ function getCanvasDimensions() {
 }
 
 function preload() {
-  leftBirdSprite = loadGif('./res/images/leftbird.gif');
-  rightBirdSprite = loadGif('./res/images/rightbird.gif');
-  rightBirdSpriteImage = loadImage('./res/images/rightbird.gif');
-  leftBirdSpriteImage = loadImage('./res/images/leftbird.gif');
+  if (level === 0) {
+    leftBirdSprite = loadGif('./res/images/leftbird.gif');
+    rightBirdSprite = loadGif('./res/images/rightbird.gif');
+    rightBirdSpriteImage = loadImage('./res/images/rightbird.gif');
+    leftBirdSpriteImage = loadImage('./res/images/leftbird.gif');
 
-  backgroundImage = loadImage('./res/images/background.png');
-  shakerSprite = loadImage('./res/images/shaker.png');
-  font = loadFont('./res/fonts/SFPixelate.ttf');
+    backgroundImage = loadImage('./res/images/background.png');
+    shakerSprite = loadImage('./res/images/shaker.png');
+    font = loadFont('./res/fonts/SFPixelate.ttf');
+  } else if (level === 1) {
+    leftBirdSprite = loadGif('./res/images/leftbird.gif');
+    rightBirdSprite = loadGif('./res/images/rightbird.gif');
+    rightBirdSpriteImage = loadImage('./res/images/rightbird.gif');
+    leftBirdSpriteImage = loadImage('./res/images/leftbird.gif');
+
+    backgroundImage = loadImage('./res/images/background.png');
+    shakerSprite = loadImage('./res/images/shaker.png');
+    font = loadFont('./res/fonts/SFPixelate.ttf');
+  }
 }
 
 function setup() {
@@ -60,6 +77,7 @@ function setup() {
   birdVelocityXSTD = birdVelocityXMean - 0.00001;
   birdVelocityYMean = 0;
   birdVelocityYSTD = 0.2;
+
   startBirdNumber = 2;
   isRightBirds = [startBirdNumber];
   birdPositionsX = [startBirdNumber];
@@ -74,10 +92,12 @@ function setup() {
     } else {
       isRightBirds[index] = false;
     }
+
     birdPositionsY[index] = randomGaussian(height / 2, height / 4);
     if (birdPositionsY[index] > height * 0.7) {
       birdPositionsY[index] = height * 0.6;
     }
+
     birdPositionsX[index] = width + 10;
     birdVelocitiesX[index] = randomGaussian(birdVelocityXMean, birdVelocityXSTD);
     birdVelocitiesY[index] = randomGaussian(birdVelocityYMean, birdVelocityYSTD);
@@ -158,6 +178,7 @@ function draw() {
       birdPositionsY[index] = 0;
     }
   }
+
   if (getMouseAngle() !== 'Mouse out of bounds') {
     mouseAngle = getMouseAngle();
   }
@@ -175,11 +196,11 @@ function mouseClicked() {
   if (shakerCount === 0) {
     shakerCount = 8;
     score = 0;
-    return;
+  } else {
+    score++;
+    shakerCount--;
   }
 
-  score++;
-  shakerCount--;
   console.log(getMouseAngle());
 }
 
