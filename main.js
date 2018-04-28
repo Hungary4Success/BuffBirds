@@ -5,3 +5,11 @@ function init() {
 }
 
 document.getElementById('root').addEventListener('load', init);
+
+function setup() {
+  // put code here that needs to run in the beginning once
+}
+
+function draw() {
+  // put code here that needs to run at every image update
+}
