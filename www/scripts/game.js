@@ -94,6 +94,10 @@ function draw() {
       birdPositionsX[index] = width + 10;
       birdVelocitiesX[index] = 0;
       birdVelocitiesY[index] = 0;
+    } else if (!isRightBirds[index] && birdPositionsX[index] > width) {
+      birdPositionsX[index] = -10;
+      birdVelocitiesX[index] = 0;
+      birdVelocitiesY[index] = 0;
     }
     if (birdPositionsY[index] > height * 0.7) {
       birdPositionsY[index] = height * 0.7;
