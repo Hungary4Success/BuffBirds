@@ -26,6 +26,7 @@ let mouseAngle;
 
 let font;
 let score = 0;
+let shakerCount = 7;
 
 function Ammo(targetX, targetY, scale) {
   this.targetX = targetX;
@@ -90,10 +91,19 @@ function draw() {
   clear();
   background(backgroundImage);
 
+  // Draw score
   textSize(32);
   textFont(font);
   text(`SCORE: ${score}`, 15, 50);
 
+  // Draw available shakers
+  const startPositionX = 750;
+  for (let i = 0; i < shakerCount; i++) {
+    const positionX = startPositionX - i * 30;
+    image(shakerSprite, positionX, 15, 25, 50);
+  }
+
+  // Draw birds
   for (let index = 0; index < birdPositionsX.length; index++) {
     if (rightBirdSprite.loaded()) {
       if (isRightBirds[index]) {
@@ -137,6 +147,7 @@ function draw() {
     mouseAngle = getMouseAngle();
   }
 
+  // Draw current shaker
   push();
   translate(width / 2, height + 20);
   rotate(mouseAngle);
@@ -154,6 +165,7 @@ function windowResized() {
 
 function mouseClicked() {
   score++;
+  shakerCount--;
   console.log(getMouseAngle());
 }
 
