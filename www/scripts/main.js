@@ -3,90 +3,58 @@
 'use strict';
 
 function init() {
-  console.log('Script started!');
-}
+  let errorName;
 
-let birdPositionsX;
-let birdPositionsY;
-let birdVelocitiesX;
-let birdVelocitiesY;
-let birdVelocityXMean;
-let birdVelocityXSTD;
-let birdVelocityYMean;
-let birdVelocityYSTD;
-let backgroundImage;
-let birdNumber;
-let crosshairImage;
-let canvasWidth;
-let canvasHeight;
+  try {
+    const { pathname } = window.location;
+    const errorCode = parseInt(pathname.substring(1, pathname.length), 10);
 
-function getCanvasDimensions() {
-  return { width: 800, height: 500 };
-}
+    const errorCategory = Math.floor(errorCode / 100);
+    const errorNumber = errorCode % 100;
 
-function setup() {
-  const { width, height } = getCanvasDimensions();
-  const canvas = createCanvas(width, height);
-  canvas.parent('container');
-  backgroundImage = loadImage('./res/images/background.png');
-  birdVelocityXMean = 0.1;
-  birdVelocityXSTD = birdVelocityXMean - 0.00001;
-  birdVelocityYMean = 0;
-  birdVelocityYSTD = 0.2;
-  birdNumber = 2;
-  birdPositionsX = [birdNumber];
-  birdPositionsX = [birdNumber];
-  birdPositionsY = [birdNumber];
-  birdVelocitiesX = [birdNumber];
-  birdVelocitiesY = [birdNumber];
-
-  for (let index = 0; index < birdNumber; index++) {
-    birdPositionsY[index] = randomGaussian(height / 2, height / 4);
-    if (birdPositionsY[index] > height * 0.7) {
-      birdPositionsY[index] = height * 0.6;
+    switch (errorCategory) {
+      case 4:
+        errorName = errorNames400[errorNumber];
+        break;
+      case 5:
+        errorName = errorNames500[errorNumber];
+        break;
+      default:
+        errorName = 'Unknown Error';
+        break;
     }
-    birdPositionsX[index] = -10;
-    birdVelocitiesX[index] = randomGaussian(birdVelocityXMean, birdVelocityXSTD);
-    birdVelocitiesY[index] = randomGaussian(birdVelocityYMean, birdVelocityYSTD);
+
+    errorName = `${errorCode} ${errorName}`;
+  } catch (exception) {
+    errorName = 'Invalid Error Code';
   }
-  crosshairImage = loadImage('./res/images/crosshair.png');
+
+  const titleElement = document.getElementById('title');
+  titleElement.innerText = errorName;
+  titleElement.style.opacity = 1;
+
+  const descriptionElement = document.getElementById('description');
+  descriptionElement.innerText = errorName;
+  descriptionElement.style.opacity = 1;
 }
 
-function draw() {
-  // put code here that needs to run at every image update
-  clear();
-  background(backgroundImage);
-  const radius = 50;
+const errorNames400 = [
+  'Bad Request', 'Unauthorized', 'Payment Required', 'Forbidden', 'Not Found',
+  'Method Not Allowed', 'Not Acceptable', 'Proxy Authentication Required',
+  'Request Timeout', 'Conflict', 'Gone', 'Length Required', 'Precondition Failed',
+  'Payload Too Large', 'URI Too Long', 'Unsupported Media Type',
+  'Range Not Satisfiable', 'Expectation Failed', 'I\'m a teapot',
+  'Misdirected Request', 'Unprocessable Entity', 'Locked', 'Failed Dependency',
+  'Upgrade Required', 'Precondition Required', 'Too Many Requests',
+  'Request Header Fields Too Large', 'Unavailable For Legal Reasons'
+];
 
-  for (let index = 0; index < birdPositionsX.length; index++) {
-    ellipse(birdPositionsX[index], birdPositionsY[index], radius);
+const errorDescriptions400 = [
 
-    birdPositionsX[index] += birdVelocitiesX[index];
-    birdPositionsY[index] += birdVelocitiesY[index];
+];
 
-    birdVelocitiesX[index] += randomGaussian(birdVelocityXMean, birdVelocityXSTD);
-    birdVelocitiesY[index] += randomGaussian(birdVelocityYMean, birdVelocityYSTD);
-
-    if (birdPositionsX[index] > width) {
-      birdPositionsX[index] = -10;
-      birdVelocitiesX[index] = 0;
-      birdVelocitiesY[index] = 0;
-    }
-    if (birdPositionsY[index] > height * 0.7 - (radius / 2)) {
-      birdPositionsY[index] = height * 0.7 - (radius / 2);
-    } else if (birdPositionsY[index] < radius / 2) {
-      birdPositionsY[index] = radius / 2;
-    }
-  }
-  image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
-}
-
-function windowResized() {
-  // put code here that needs to run in the beginning once
-  const { width, height } = getCanvasDimensions();
-  resizeCanvas(width, height);
-}
-
-function onMouseClick() {
-
-}
+const errorNames500 = ['Internal Server Error', 'Not Implemented', 'Bad Gateway',
+  'Service Unavailable', 'Gateway Timeout', 'HTTP Version Not Supported',
+  'Variant Also Negotiates', 'Insufficient Storage', 'Loop Detected',
+  'Not Extended', 'Network Authentication Required'
+];

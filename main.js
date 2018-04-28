@@ -21,7 +21,7 @@ app.use(compression());
 
 app.use(express.static(path.join(__dirname, 'www'), { index: false }));
 
-app.get('/', (request, response) => {
+app.get('/*', (request, response) => {
   response.sendFile(path.join(__dirname, '/www/index.html'));
 });
 
