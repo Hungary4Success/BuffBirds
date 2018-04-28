@@ -119,6 +119,14 @@ function windowResized() {
 }
 
 function mouseClicked() {
-  console.log(mouseX);
-  console.log(mouseY);
+  console.log(getMouseAngle());
+}
+
+function getMouseAngle() {
+  if (mouseX > 0 && mouseX < 800 && mouseY > 0 && mouseY < 500) {
+    return atan((mouseX - 400) / (height - mouseY)) * 180 / Math.PI;
+  }
+  else{
+    return 'Mouse out of bounds';
+  }
 }
