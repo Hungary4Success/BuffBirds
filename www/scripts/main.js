@@ -9,6 +9,7 @@ function init() {
 let background;
 var canvasWidth;
 var canvasHeight;
+
 function setup() {
   canvasWidth = windowWidth / 2;
   canvasHeight = windowHeight / 2;
@@ -19,12 +20,14 @@ function setup() {
 function draw() {
   // put code here that needs to run at every image update
   clear();
-  background(background);
+  //background(background);
   ellipse(mouseX, mouseY, 50, 50);
 }
 
 function windowResized() {
   // put code here that needs to run in the beginning once
+  canvasWidth = windowWidth / 2;
+  canvasHeight = windowHeight / 2;
   resizeCanvas(canvasWidth, canvasHeight);
 }
 
