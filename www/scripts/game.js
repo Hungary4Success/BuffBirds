@@ -113,13 +113,13 @@ function draw() {
       birdPositionsY[index] = 0;
     }
   }
-  image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
+  push();
+  translate(width / 2, height + 20);
+  rotate(getMouseAngle());
+  image(shakerSprite, -75 / 2 ,-130 , 75, 170);
+  pop();
 
-    push();
-    translate(width / 2, height + 20);
-    rotate(getMouseAngle());
-    image(shakerSprite, -75 / 2 ,-130 , 75, 170);
-    pop();
+  image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
 } // for index
 
 function windowResized() {
