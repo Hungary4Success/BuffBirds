@@ -26,7 +26,7 @@ function getCanvasDimensions() {
 }
 
 function preload() {
-  birdSprite = loadImage('./res/images/bird.gif');
+  birdSprite = loadGif('./res/images/bird.gif');
 }
 
 function setup() {
@@ -51,7 +51,7 @@ function setup() {
     if (birdPositionsY[index] > height * 0.7) {
       birdPositionsY[index] = height * 0.6;
     }
-    birdPositionsX[index] = -10;
+    birdPositionsX[index] = width + 10;
     birdVelocitiesX[index] = randomGaussian(birdVelocityXMean, birdVelocityXSTD);
     birdVelocitiesY[index] = randomGaussian(birdVelocityYMean, birdVelocityYSTD);
   }
@@ -62,26 +62,25 @@ function draw() {
   // put code here that needs to run at every image update
   clear();
   background(backgroundImage);
-  const radius = 50;
 
   for (let index = 0; index < birdPositionsX.length; index++) {
     image(birdSprite, birdPositionsX[index], birdPositionsY[index]);
 
-    birdPositionsX[index] += birdVelocitiesX[index];
+    birdPositionsX[index] -= birdVelocitiesX[index];
     birdPositionsY[index] += birdVelocitiesY[index];
 
     birdVelocitiesX[index] += randomGaussian(birdVelocityXMean, birdVelocityXSTD);
     birdVelocitiesY[index] += randomGaussian(birdVelocityYMean, birdVelocityYSTD);
 
-    if (birdPositionsX[index] > width) {
-      birdPositionsX[index] = -10;
+    if (birdPositionsX[index] < -birdSprite.width) {
+      birdPositionsX[index] = width + 10;
       birdVelocitiesX[index] = 0;
       birdVelocitiesY[index] = 0;
     }
-    if (birdPositionsY[index] > height * 0.7 - (radius / 2)) {
-      birdPositionsY[index] = height * 0.7 - (radius / 2);
-    } else if (birdPositionsY[index] < radius / 2) {
-      birdPositionsY[index] = radius / 2;
+    if (birdPositionsY[index] > height * 0.7) {
+      birdPositionsY[index] = height * 0.7;
+    } else if (birdPositionsY[index] < 0) {
+      birdPositionsY[index] = 0;
     }
   }
   image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
