@@ -15,7 +15,7 @@ function draw() {
   // put code here that needs to run at every image update
   clear();
   background(background);
-  ellipse(50, 50, 50, 50);
+  ellipse(mouseX, mouseY, 50, 50);
 }
 
 function windowResized() {
