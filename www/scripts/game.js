@@ -2,10 +2,6 @@
 
 'use strict';
 
-function init() {
-  console.log('Script started!');
-}
-
 let isRightBirds;
 let birdPositionsX;
 let birdPositionsY;
@@ -36,7 +32,9 @@ function getCanvasDimensions() {
 }
 
 function preload() {
-  leftBirdSprite = loadGif('./res/images/leftbird.gif');
+  leftBirdSprite = loadGif('./res/images/leftbird.gif', () => {
+    console.log('load');
+  });
   rightBirdSprite = loadGif('./res/images/rightbird.gif');
   backgroundImage = loadImage('./res/images/background.png');
   shakerSprite = loadImage('./res/images/shaker.jpg');
