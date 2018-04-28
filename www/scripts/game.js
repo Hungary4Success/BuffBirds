@@ -33,9 +33,7 @@ function getCanvasDimensions() {
 }
 
 function preload() {
-  leftBirdSprite = loadGif('./res/images/leftbird.gif', () => {
-    console.log('load');
-  });
+  leftBirdSprite = loadGif('./res/images/leftbird.gif');
   rightBirdSprite = loadGif('./res/images/rightbird.gif');
   backgroundImage = loadImage('./res/images/background.png');
   shakerSprite = loadImage('./res/images/shaker.jpg');
@@ -45,7 +43,9 @@ function setup() {
   const { width, height } = getCanvasDimensions();
   const canvas = createCanvas(width, height);
   canvas.parent('container');
+
   noCursor();
+
   birdVelocityXMean = 0.1;
   birdVelocityXSTD = birdVelocityXMean - 0.00001;
   birdVelocityYMean = 0;
@@ -72,7 +72,12 @@ function setup() {
     birdVelocitiesX[index] = randomGaussian(birdVelocityXMean, birdVelocityXSTD);
     birdVelocitiesY[index] = randomGaussian(birdVelocityYMean, birdVelocityYSTD);
   }
+
   crosshairImage = loadImage('./res/images/crosshair.png');
+  if (!rightBirdSprite.loaded() || !leftBirdSprite.loaded()) {
+    rightBirdSprite = loadImage('./res/images/rightbird.gif');
+    leftBirdSprite = loadImage('./res/images/leftbird.gif');
+  }
 }
 
 function draw() {
@@ -112,14 +117,14 @@ function draw() {
       birdPositionsY[index] = 0;
     }
   }
-  if(getMouseAngle() != 'Mouse out of bounds'){
+  if (getMouseAngle() != 'Mouse out of bounds') {
     mouseAngle = getMouseAngle();
   }
 
   push();
   translate(width / 2, height + 20);
   rotate(mouseAngle);
-  image(shakerSprite, -75 / 2 ,-130 , 75, 170);
+  image(shakerSprite, -75 / 2, -130, 75, 170);
   pop();
 
   image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
@@ -139,7 +144,6 @@ function getMouseAngle() {
   if (mouseX > 0 && mouseX < 800 && mouseY > 0 && mouseY < 500) {
     return atan((mouseX - 400) / (height - mouseY));
   }
-  else{
-    return 'Mouse out of bounds';
-  }
+
+  return 'Mouse out of bounds';
 }
