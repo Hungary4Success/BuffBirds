@@ -8,9 +8,13 @@ document.getElementById('root').addEventListener('load', init);
 
 function setup() {
   // put code here that needs to run in the beginning once
-  createCanvas()
+  createCanvas(windowWidth / 2, windowHeight / 2);
 }
 
 function draw() {
   // put code here that needs to run at every image update
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth / 2 , windowHeight / 2);
 }
