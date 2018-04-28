@@ -20,10 +20,14 @@ let canvasWidth;
 let canvasHeight;
 let thrownShakers;
 let shakerSprite;
+let originalShakerW;
+let originalShakerH;
 
-function Ammo(targetX, targetY, scale) {
+function Ammo(targetX, targetY, posX, posY, scale) {
   this.targetX = targetX;
   this.targetY = targetY;
+  this.positionX = posX;
+  this.positionY = posY;
   this.scale = scale;
 }
 
@@ -55,6 +59,7 @@ function setup() {
   birdPositionsY = [startBirdNumber];
   birdVelocitiesX = [startBirdNumber];
   birdVelocitiesY = [startBirdNumber];
+  thrownShakers = [];
 
   for (let index = 0; index < startBirdNumber; index++) {
     if (random(0, 100) < 50) {
@@ -69,7 +74,9 @@ function setup() {
     birdPositionsX[index] = width + 10;
     birdVelocitiesX[index] = randomGaussian(birdVelocityXMean, birdVelocityXSTD);
     birdVelocitiesY[index] = randomGaussian(birdVelocityYMean, birdVelocityYSTD);
-  }
+  } // for index
+  originalShakerW = shakerSprite.width;
+  originalShakerH = shakerSprite.height;
 }
 
 function draw() {
@@ -110,6 +117,29 @@ function draw() {
     }
   }
   image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
+
+  if (thrownShakers.length > 0) {
+    let newShakerSprite = JSON.parse(JSON.stringify(shakerSprite));
+    for (let shaker = 0; shaker < thrownShakers.length; shaker++) {
+      const current = thrownShakers[shaker];
+      if (
+        abs(current.positionX - current.targetX) < 2 &&
+        abs(current.positionY - current.targetY) < 2) {
+        thrownShakers.splice(shaker, 1);
+        console.log('at position');
+      } // if
+      newShakerSprite.resize(originalShakerW * current.scale, originalShakerH * current.scale);
+      image(newShakerSprite, current.positionX, current.positionY);
+
+      const speed = 0.01;
+      const xDist = current.targetX - width / 2;
+      const yDist = current.targetY - height;
+      current.positionX += xDist * speed;
+      current.positionY += yDist * speed;
+      current.scale -= 0.005;
+      console.log(current.scale);
+    }
+  }
 } // for index
 
 function windowResized() {
@@ -119,14 +149,16 @@ function windowResized() {
 }
 
 function mouseClicked() {
-  console.log(getMouseAngle());
+  const angle = getMouseAngle();
+  if (angle !== 'Mouse out of bounds') {
+    thrownShakers.push(new Ammo(mouseX, mouseY, width / 2, height, 1.0));
+  }
 }
 
 function getMouseAngle() {
   if (mouseX > 0 && mouseX < 800 && mouseY > 0 && mouseY < 500) {
     return atan((mouseX - 400) / (height - mouseY)) * 180 / Math.PI;
   }
-  else{
-    return 'Mouse out of bounds';
-  }
+
+  return 'Mouse out of bounds';
 }
