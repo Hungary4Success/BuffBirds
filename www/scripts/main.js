@@ -28,7 +28,7 @@ function setup() {
   birdVelocityXMean = 0.1;
   birdVelocityXSTD = birdVelocityXMean - 0.00001;
   birdVelocityYMean = 0;
-  birdVelocityYSTD = 0.5;
+  birdVelocityYSTD = 0.2;
   birdNumber = 2;
   birdPositionsX = [birdNumber];
   birdPositionsX = [birdNumber];
@@ -38,6 +38,9 @@ function setup() {
 
   for (let index = 0; index < birdNumber; index++) {
     birdPositionsY[index] = randomGaussian(height / 2, height / 4);
+    if (birdPositionsY[index] > height * 0.7) {
+      birdPositionsY[index] = height * 0.6;
+    }
     birdPositionsX[index] = -10;
     birdVelocitiesX[index] = randomGaussian(birdVelocityXMean, birdVelocityXSTD);
     birdVelocitiesY[index] = randomGaussian(birdVelocityYMean, birdVelocityYSTD);
@@ -65,8 +68,8 @@ function draw() {
       birdVelocitiesX[index] = 0;
       birdVelocitiesY[index] = 0;
     }
-    if (birdPositionsY[index] > height - (radius / 2)) {
-      birdPositionsY[index] = height - (radius / 2);
+    if (birdPositionsY[index] > height * 0.7 - (radius / 2)) {
+      birdPositionsY[index] = height * 0.7 - (radius / 2);
     } else if (birdPositionsY[index] < radius / 2) {
       birdPositionsY[index] = radius / 2;
     }
