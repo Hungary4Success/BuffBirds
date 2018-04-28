@@ -5,10 +5,14 @@ function init() {
 }
 
 function setup() {
-  createCanvas(1920, 1080);
+  createCanvas(windowWidth, windowHeight);
 }
 
 function draw() {
   clear();
   ellipse(mouseX, mouseY, 50, 50);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
