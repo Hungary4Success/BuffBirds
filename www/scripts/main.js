@@ -24,6 +24,7 @@ function setup() {
   canvasWidth = windowWidth / 2;
   canvasHeight = windowHeight / 2;
   createCanvas(canvasWidth, canvasHeight);
+  noCursor();
   backgroundImage = loadImage('./res/images/background.png');
   birdVelocityXMean = 0.1;
   birdVelocityXSTD = birdVelocityXMean - 0.00001;
