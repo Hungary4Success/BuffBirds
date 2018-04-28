@@ -91,10 +91,25 @@ function draw() {
   clear();
   background(backgroundImage);
 
-  // Draw score
-  textSize(32);
-  textFont(font);
-  text(`SCORE: ${score}`, 15, 50);
+  if (shakerCount <= 0) {
+    // Draw end screen
+    textSize(60);
+    text('GAME OVER', 215, 225);
+    textSize(50);
+    text(`SCORE: ${score}`, 285, 300);
+  } else {
+    // Draw score
+    textSize(32);
+    textFont(font);
+    text(`SCORE: ${score}`, 15, 50);
+
+    // Draw current shaker
+    push();
+    translate(width / 2, height + 20);
+    rotate(mouseAngle);
+    image(shakerSprite, -75 / 2, -130, 75, 170);
+    pop();
+  }
 
   // Draw available shakers
   const startPositionX = 750;
@@ -147,13 +162,6 @@ function draw() {
     mouseAngle = getMouseAngle();
   }
 
-  // Draw current shaker
-  push();
-  translate(width / 2, height + 20);
-  rotate(mouseAngle);
-  image(shakerSprite, -75 / 2, -130, 75, 170);
-  pop();
-
   image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
 } // for index
 
@@ -164,6 +172,12 @@ function windowResized() {
 }
 
 function mouseClicked() {
+  if (shakerCount === 0) {
+    shakerCount = 8;
+    score = 0;
+    return;
+  }
+
   score++;
   shakerCount--;
   console.log(getMouseAngle());
