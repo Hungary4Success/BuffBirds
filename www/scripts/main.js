@@ -7,10 +7,14 @@ function init() {
 }
 
 let backgroundImage;
+let canvasWidth;
+let canvasHeight;
 
 function setup() {
-  createCanvas(windowWidth / 2, windowHeight / 2);
-  backgroundImage = loadImage('./res/images/background.png');
+  canvasWidth = windowWidth / 2;
+  canvasHeight = windowHeight / 2;
+  createCanvas(canvasWidth, canvasHeight);
+  background = loadImage('./res/images/background.png');
 }
 
 function draw() {
@@ -22,5 +26,11 @@ function draw() {
 
 function windowResized() {
   // put code here that needs to run in the beginning once
-  resizeCanvas(windowWidth / 2, windowHeight / 2);
+  canvasWidth = windowWidth / 2;
+  canvasHeight = windowHeight / 2;
+  resizeCanvas(canvasWidth, canvasHeight);
+}
+
+function onMouseClick() {
+
 }
