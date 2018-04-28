@@ -1,3 +1,5 @@
+/* eslint strict: 0, no-unused-vars: 0, no-undef: 0 */
+
 'use strict';
 
 function init() {
@@ -8,7 +10,7 @@ let background;
 
 function setup() {
   createCanvas(windowWidth / 2, windowHeight / 2);
-  background = loadImage('http://www.guibingzhuche.com/data/out/173/1384241.png');
+  background = loadImage('./res/images/background.png');
 }
 
 function draw() {
@@ -20,5 +22,5 @@ function draw() {
 
 function windowResized() {
   // put code here that needs to run in the beginning once
-  resizeCanvas(windowWidth / 2 , windowHeight / 2);
+  resizeCanvas(windowWidth / 2, windowHeight / 2);
 }
