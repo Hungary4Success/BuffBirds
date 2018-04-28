@@ -56,7 +56,6 @@ function setup() {
     } else {
       isRightBirds[index] = false;
     }
-    console.log(isRightBirds[index]);
     birdPositionsY[index] = randomGaussian(height / 2, height / 4);
     if (birdPositionsY[index] > height * 0.7) {
       birdPositionsY[index] = height * 0.6;
@@ -91,11 +90,11 @@ function draw() {
     birdVelocitiesY[index] += randomGaussian(birdVelocityYMean, birdVelocityYSTD);
 
     if (isRightBirds[index] && birdPositionsX[index] < -leftBirdSprite.width) {
-      birdPositionsX[index] = width + 10;
+      birdPositionsX[index] = width + rightBirdSprite.width;
       birdVelocitiesX[index] = 0;
       birdVelocitiesY[index] = 0;
     } else if (!isRightBirds[index] && birdPositionsX[index] > width) {
-      birdPositionsX[index] = -10;
+      birdPositionsX[index] = -leftBirdSprite.width - 10;
       birdVelocitiesX[index] = 0;
       birdVelocitiesY[index] = 0;
     }
