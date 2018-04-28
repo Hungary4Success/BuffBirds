@@ -24,6 +24,9 @@ let thrownShakers;
 let shakerSprite;
 let mouseAngle;
 
+let font;
+let score = 0;
+
 function Ammo(targetX, targetY, scale) {
   this.targetX = targetX;
   this.targetY = targetY;
@@ -42,6 +45,7 @@ function preload() {
 
   backgroundImage = loadImage('./res/images/background.png');
   shakerSprite = loadImage('./res/images/shaker.png');
+  font = loadFont('./res/fonts/SFPixelate.ttf');
 }
 
 function setup() {
@@ -86,6 +90,10 @@ function draw() {
   clear();
   background(backgroundImage);
 
+  textSize(32);
+  textFont(font);
+  text(`SCORE: ${score}`, 15, 50);
+
   for (let index = 0; index < birdPositionsX.length; index++) {
     if (rightBirdSprite.loaded()) {
       if (isRightBirds[index]) {
@@ -125,7 +133,7 @@ function draw() {
       birdPositionsY[index] = 0;
     }
   }
-  if (getMouseAngle() != 'Mouse out of bounds') {
+  if (getMouseAngle() !== 'Mouse out of bounds') {
     mouseAngle = getMouseAngle();
   }
 
@@ -145,6 +153,7 @@ function windowResized() {
 }
 
 function mouseClicked() {
+  score++;
   console.log(getMouseAngle());
 }
 
