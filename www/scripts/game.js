@@ -24,6 +24,7 @@ let canvasWidth;
 let canvasHeight;
 let thrownShakers;
 let shakerSprite;
+let mouseAngle;
 
 function Ammo(targetX, targetY, scale) {
   this.targetX = targetX;
@@ -113,9 +114,13 @@ function draw() {
       birdPositionsY[index] = 0;
     }
   }
+  if(getMouseAngle() != 'Mouse out of bounds'){
+    mouseAngle = getMouseAngle();
+  }
+
   push();
   translate(width / 2, height + 20);
-  rotate(getMouseAngle());
+  rotate(mouseAngle);
   image(shakerSprite, -75 / 2 ,-130 , 75, 170);
   pop();
 
