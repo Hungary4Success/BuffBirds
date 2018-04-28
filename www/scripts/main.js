@@ -8,7 +8,8 @@ function init() {
 
   try {
     const { pathname } = window.location;
-    const errorCode = parseInt(pathname.substring(1, pathname.length), 10);
+    let errorCode = parseInt(pathname.substring(1, pathname.length), 10);
+    if (pathname === '/') errorCode = 404;
 
     const errorCategory = Math.floor(errorCode / 100);
     const errorNumber = errorCode % 100;
