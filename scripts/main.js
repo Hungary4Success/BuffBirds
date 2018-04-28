@@ -4,11 +4,11 @@ function init() {
   console.log('Script started!');
 }
 
-document.getElementById('root').addEventListener('load', init);
+let background;
 
 function setup() {
-  // put code here that needs to run in the beginning once
   createCanvas(windowWidth / 2, windowHeight / 2);
+  background = loadImage('http://www.guibingzhuche.com/data/out/173/1384241.png');
 }
 
 function draw() {
@@ -17,8 +17,11 @@ function draw() {
   let radius = 50;
   let randomY = randomGaussian(displayHeight / 2, displayHeight / 2);
   ellipse(50, randomY, radius, radius);
+  background(background);
+  ellipse(50, 50, 50, 50);
 }
 
 function windowResized() {
+  // put code here that needs to run in the beginning once
   resizeCanvas(windowWidth / 2 , windowHeight / 2);
 }
