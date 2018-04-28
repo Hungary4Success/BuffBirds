@@ -12,7 +12,9 @@ let birdVelocityXSTD;
 let birdVelocityYMean;
 let birdVelocityYSTD;
 let leftBirdSprite;
+let leftBirdSpriteImage;
 let rightBirdSprite;
+let rightBirdSpriteImage;
 let backgroundImage;
 let startBirdNumber;
 let crosshairImage;
@@ -20,8 +22,10 @@ let canvasWidth;
 let canvasHeight;
 let thrownShakers;
 let shakerSprite;
-let originalShakerW;
-let originalShakerH;
+let mouseAngle;
+
+let font;
+let score = 0;
 
 function Ammo(targetX, targetY, posX, posY, scale) {
   this.targetX = targetX;
@@ -38,16 +42,21 @@ function getCanvasDimensions() {
 function preload() {
   leftBirdSprite = loadGif('./res/images/leftbird.gif');
   rightBirdSprite = loadGif('./res/images/rightbird.gif');
+  rightBirdSpriteImage = loadImage('./res/images/rightbird.gif');
+  leftBirdSpriteImage = loadImage('./res/images/leftbird.gif');
   backgroundImage = loadImage('./res/images/background.png');
-  shakerSprite = loadImage('./res/images/shaker.jpg');
+  shakerSprite = loadImage('./res/images/shaker.png');
   crosshairImage = loadImage('./res/images/crosshair.png');
+  font = loadFont('./res/fonts/SFPixelate.ttf');
 }
 
 function setup() {
   const { width, height } = getCanvasDimensions();
   const canvas = createCanvas(width, height);
   canvas.parent('container');
+
   noCursor();
+
   birdVelocityXMean = 0.1;
   birdVelocityXSTD = birdVelocityXMean - 0.00001;
   birdVelocityYMean = 0;
@@ -75,8 +84,6 @@ function setup() {
     birdVelocitiesX[index] = randomGaussian(birdVelocityXMean, birdVelocityXSTD);
     birdVelocitiesY[index] = randomGaussian(birdVelocityYMean, birdVelocityYSTD);
   } // for index
-  originalShakerW = shakerSprite.width;
-  originalShakerH = shakerSprite.height;
 }
 
 function draw() {
@@ -84,12 +91,23 @@ function draw() {
   clear();
   background(backgroundImage);
 
+  textSize(32);
+  textFont(font);
+  text(`SCORE: ${score}`, 15, 50);
+
   for (let index = 0; index < birdPositionsX.length; index++) {
-    if (isRightBirds[index]) {
-      image(rightBirdSprite, birdPositionsX[index], birdPositionsY[index]);
+    if (rightBirdSprite.loaded()) {
+      if (isRightBirds[index]) {
+        image(rightBirdSprite, birdPositionsX[index], birdPositionsY[index]);
+      } else {
+        image(leftBirdSprite, birdPositionsX[index], birdPositionsY[index]);
+      }
+    } else if (isRightBirds[index]) {
+      image(rightBirdSpriteImage, birdPositionsX[index], birdPositionsY[index]);
     } else {
-      image(leftBirdSprite, birdPositionsX[index], birdPositionsY[index]);
+      image(leftBirdSpriteImage, birdPositionsX[index], birdPositionsY[index]);
     }
+
 
     if (isRightBirds[index]) {
       birdPositionsX[index] -= birdVelocitiesX[index];
@@ -116,27 +134,37 @@ function draw() {
       birdPositionsY[index] = 0;
     }
   }
+  if (getMouseAngle() !== 'Mouse out of bounds') {
+    mouseAngle = getMouseAngle();
+  }
+
+  push();
+  translate(width / 2, height + 20);
+  rotate(mouseAngle);
+  image(shakerSprite, -75 / 2, -130, 75, 170);
+  pop();
+
   image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
 
   if (thrownShakers.length > 0) {
-    let newShakerSprite = JSON.parse(JSON.stringify(shakerSprite));
+    let newShakerSprite = shakerSprite.get();
     for (let shaker = 0; shaker < thrownShakers.length; shaker++) {
       const current = thrownShakers[shaker];
       if (
-        abs(current.positionX - current.targetX) < 2 &&
-        abs(current.positionY - current.targetY) < 2) {
+        abs((current.positionX + shakerSprite.width * current.scale / 2) - current.targetX) < shakerSprite.width * current.scale / 2 &&
+        abs(current.positionY - current.targetY) < shakerSprite.height * current.scale / 8) {
         thrownShakers.splice(shaker, 1);
         console.log('at position');
       } // if
-      newShakerSprite.resize(originalShakerW * current.scale, originalShakerH * current.scale);
+      newShakerSprite.resize(shakerSprite.width * current.scale, shakerSprite.height * current.scale);
       image(newShakerSprite, current.positionX, current.positionY);
 
-      const speed = 0.01;
-      const xDist = current.targetX - width / 2;
+      const speed = 0.06;
+      const xDist = (current.targetX - shakerSprite.width / 8) - (width / 2 - (shakerSprite.width / 4));
       const yDist = current.targetY - height;
       current.positionX += xDist * speed;
       current.positionY += yDist * speed;
-      current.scale -= 0.005;
+      current.scale -= 0.01;
       console.log(current.scale);
     }
   }
@@ -151,13 +179,15 @@ function windowResized() {
 function mouseClicked() {
   const angle = getMouseAngle();
   if (angle !== 'Mouse out of bounds') {
-    thrownShakers.push(new Ammo(mouseX, mouseY, width / 2, height, 1.0));
+    thrownShakers.push(new Ammo(mouseX, mouseY, width / 2 - (shakerSprite.width / 4), height, 0.5));
   }
+  score++;
+  console.log(getMouseAngle());
 }
 
 function getMouseAngle() {
   if (mouseX > 0 && mouseX < 800 && mouseY > 0 && mouseY < 500) {
-    return atan((mouseX - 400) / (height - mouseY)) * 180 / Math.PI;
+    return atan((mouseX - 400) / (height - mouseY));
   }
 
   return 'Mouse out of bounds';
