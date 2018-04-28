@@ -6,17 +6,17 @@ function init() {
   console.log('Script started!');
 }
 
-let background;
+let backgroundImage;
 
 function setup() {
   createCanvas(windowWidth / 2, windowHeight / 2);
-  background = loadImage('./res/images/background.png');
+  backgroundImage = loadImage('./res/images/background.png');
 }
 
 function draw() {
   // put code here that needs to run at every image update
   clear();
-  background(background);
+  background(backgroundImage);
   ellipse(mouseX, mouseY, 50, 50);
 }
 
