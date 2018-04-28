@@ -7,6 +7,7 @@ function init() {
 }
 
 let backgroundImage;
+let crosshairImage;
 let canvasWidth;
 let canvasHeight;
 
@@ -15,13 +16,14 @@ function setup() {
   canvasHeight = windowHeight / 2;
   createCanvas(canvasWidth, canvasHeight);
   backgroundImage = loadImage('./res/images/background.png');
+  crosshairImage = loadImage('./res/images/crosshair.png');
 }
 
 function draw() {
   // put code here that needs to run at every image update
   clear();
   background(backgroundImage);
-  ellipse(mouseX, mouseY, 50, 50);
+  image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
 }
 
 function windowResized() {
