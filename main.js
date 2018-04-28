@@ -14,7 +14,9 @@ function setup() {
 function draw() {
   // put code here that needs to run at every image update
   clear();
-  ellipse(50, 50, 50, 50);
+  let radius = 50;
+  let randomY = randomGaussian(displayHeight / 2, displayHeight / 2);
+  ellipse(50, randomY, radius, radius);
 }
 
 function windowResized() {
