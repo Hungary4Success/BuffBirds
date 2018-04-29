@@ -36,6 +36,6 @@ const options = {
 };
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-const port = 443;
+const port = process.env.PORT || 443;
 https.createServer(options, app).listen(port);
 print(`HTTPS webserver is listening on port ${port}.`);
