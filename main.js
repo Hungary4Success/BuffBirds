@@ -3,6 +3,7 @@ const { print } = require('./server/utils');
 const compression = require('compression');
 const express = require('express');
 const fs = require('fs');
+const http = require('http');
 const https = require('https');
 const path = require('path');
 const morgan = require('morgan');
@@ -37,5 +38,9 @@ const options = {
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const port = process.env.PORT || 443;
-https.createServer(options, app).listen(port);
+if (process.env.NODE_ENV === 'production') {
+  http.createServer(app).listen(port);
+} else {
+  https.createServer(options, app).listen(port);
+}
 print(`HTTPS webserver is listening on port ${port}.`);
