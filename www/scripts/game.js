@@ -42,6 +42,14 @@ function Ammo(targetX, targetY, posX, posY, scale) {
   this.scale = scale;
 }
 
+function Bird(birdPositionX, birdPositionY, birdVelocityX, birdVelocityY, isRightBird) {
+  this.birdPositionX = birdPositionX;
+  this.birdPositionY = birdPositionY;
+  this.birdVelocityX = birdVelocityX;
+  this.birdVelocityY = birdVelocityY;
+  this.isRightBird = isRightBird;
+}
+
 function getCanvasDimensions() {
   return { width: 800, height: 500 };
 }
