@@ -30,6 +30,9 @@ let rightFallingBirdSpriteImage;
 let rightWalkingBirdSprite;
 let rightWalkingBirdSpriteImage;
 
+let leftWalkingBirdSprite;
+let leftWalkingBirdSpriteImage;
+
 let backgroundImage;
 let crosshairImage;
 
@@ -45,6 +48,7 @@ let level = 0;
 
 let startBirdNumber;
 let score = 0;
+let highScore = 0;
 let shakerCount = 7;
 
 const debug = true;
@@ -76,6 +80,7 @@ function FallingBird(birdPositionX, birdPositionY, isRightBird) {
 function WalkingBird(birdPositionX, birdPositionY, isRightBird) {
   this.birdPositionX = birdPositionX;
   this.birdPositionY = birdPositionY;
+  this.walkingSpeed = Math.random() * (2 - 1) + 1;
   this.isRightBird = isRightBird;
 }
 
@@ -91,7 +96,15 @@ function newBird() {
   } else {
     posX = -leftBirdSprite.width - 10;
   }
-  const retValue = new FlyingBird(posX, randomGaussian(height / 2, height / 4), randomGaussian(birdVelocityXMean, birdVelocityXSTD), randomGaussian(birdVelocityYMean, birdVelocityYSTD), isGoingToBeRight);
+
+  const retValue = new FlyingBird(
+    posX,
+    randomGaussian(height / 2, height / 4),
+    randomGaussian(birdVelocityXMean, birdVelocityXSTD),
+    randomGaussian(birdVelocityYMean, birdVelocityYSTD),
+    isGoingToBeRight
+  );
+
   if (retValue.birdPositionsY > height * 0.7) {
     retValue.birdPositionY = height * 0.6;
   }
@@ -109,8 +122,11 @@ function preload() {
     rightFallingBirdSpriteImage = loadImage('./res/images/rightbuffbird.png');
     leftFallingBirdSpriteImage = loadImage('./res/images/leftbuffbird.png');
 
-    rightWalkingBirdSprite = loadGif('./res/images/buffbirdmove.gif');
-    rightWalkingBirdSpriteImage = loadImage('./res/images/buffbirdmove.gif');
+    rightWalkingBirdSprite = loadGif('./res/images/rightbuffbird.gif');
+    rightWalkingBirdSpriteImage = loadImage('./res/images/rightbuffbird.gif');
+
+    leftWalkingBirdSprite = loadGif('./res/images/leftbuffbird.gif');
+    leftWalkingBirdSpriteImage = loadImage('./res/images/leftbuffbird.gif');
 
     backgroundImage = loadImage('./res/images/background.png');
     shakerSprite = loadImage('./res/images/shaker.png');
@@ -124,8 +140,11 @@ function preload() {
     rightFallingBirdSpriteImage = loadImage('./res/images/rightbuffbird.png');
     leftFallingBirdSpriteImage = loadImage('./res/images/leftbuffbird.png');
 
-    rightWalkingBirdSprite = loadGif('./res/images/buffbirdmove.gif');
-    rightWalkingBirdSpriteImage = loadImage('./res/images/buffbirdmove.gif');
+    rightWalkingBirdSprite = loadGif('./res/images/rightbuffbird.gif');
+    rightWalkingBirdSpriteImage = loadImage('./res/images/rightbuffbird.gif');
+
+    leftWalkingBirdSprite = loadGif('./res/images/leftbuffbird.gif');
+    leftWalkingBirdSpriteImage = loadImage('./res/images/leftbuffbird.gif');
 
     backgroundImage = loadImage('./res/images/background.png');
     shakerSprite = loadImage('./res/images/shaker.png');
@@ -177,7 +196,14 @@ function draw() {
       textSize(50);
       text(`SCORE: ${score}`, 285, 300);
     }
-  } else {
+
+    if (level > highScore) {
+      fill(238, 64, 86);
+      text('NEW HIGHSCORE!', 175, 375);
+      fill(0);
+      highScore = level;
+      }
+    } else {
     // Draw score
     textSize(32);
     textFont(font);
@@ -211,9 +237,15 @@ function draw() {
         image(leftBirdSprite, flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY);
       }
     } else if (flyingBirds[index].isRightBird) {
-      image(rightBirdSpriteImage, flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY);
+      image(
+        rightBirdSpriteImage, flyingBirds[index].birdPositionX,
+        flyingBirds[index].birdPositionY
+      );
     } else {
-      image(leftBirdSpriteImage, flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY);
+      image(
+        leftBirdSpriteImage, flyingBirds[index].birdPositionX,
+        flyingBirds[index].birdPositionY
+      );
     }
 
     if (debug) {
@@ -228,10 +260,17 @@ function draw() {
     }
     flyingBirds[index].birdPositionY += flyingBirds[index].birdVelocityY;
 
-    flyingBirds[index].birdVelocityX += randomGaussian(birdVelocityXMean, birdVelocityXSTD);
-    flyingBirds[index].birdVelocityY += randomGaussian(birdVelocityYMean, birdVelocityYSTD);
+    flyingBirds[index].birdVelocityX += randomGaussian(
+      birdVelocityXMean,
+      birdVelocityXSTD
+    );
+    flyingBirds[index].birdVelocityY += randomGaussian(
+      birdVelocityYMean,
+      birdVelocityYSTD
+    );
 
-    if (flyingBirds[index].isRightBird && flyingBirds[index].birdPositionX < -leftBirdSprite.width) {
+    if (flyingBirds[index].isRightBird
+      && flyingBirds[index].birdPositionX < -leftBirdSprite.width) {
       flyingBirds[index] = newBird();
     } else if (!flyingBirds[index].isRightBird && flyingBirds[index].birdPositionX > width) {
       flyingBirds[index] = newBird();
@@ -246,16 +285,28 @@ function draw() {
   // Draw falling birds
   for (let index = 0; index < fallingBirds.length; index++) {
     if (fallingBirds[index].isRightBird) {
-      image(rightFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
+      image(
+        rightFallingBirdSpriteImage,
+        fallingBirds[index].birdPositionX,
+        fallingBirds[index].birdPositionY
+      );
     } else {
-      image(leftFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
+      image(
+        leftFallingBirdSpriteImage,
+        fallingBirds[index].birdPositionX,
+        fallingBirds[index].birdPositionY
+      );
     }
 
     if (fallingBirds[index].birdPositionY < 400) {
       fallingBirds[index].birdPositionY += fallingBirds[index].birdVelocityY;
       fallingBirds[index].birdVelocityY += 0.3;
     } else {
-      walkingBirds.push(new WalkingBird(fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY, fallingBirds[index].isRightBird));
+      walkingBirds.push(new WalkingBird(
+        fallingBirds[index].birdPositionX,
+        fallingBirds[index].birdPositionY,
+        fallingBirds[index].isRightBird
+      ));
       fallingBirds.splice(index, 1);
     }
   }
@@ -263,11 +314,19 @@ function draw() {
   // Draw walking birds
   for (let index = 0; index < walkingBirds.length; index++) {
     if (walkingBirds[index].isRightBird) {
-      image(rightWalkingBirdSprite, walkingBirds[index].birdPositionX, walkingBirds[index].birdPositionY);
-      walkingBirds[index].birdPositionX -= 1;
+      image(
+        rightWalkingBirdSprite,
+        walkingBirds[index].birdPositionX,
+        walkingBirds[index].birdPositionY
+      );
+      walkingBirds[index].birdPositionX -= walkingBirds[index].walkingSpeed;
     } else {
-      image(rightWalkingBirdSprite, walkingBirds[index].birdPositionX, walkingBirds[index].birdPositionY);
-      walkingBirds[index].birdPositionX += 1;
+      image(
+        leftWalkingBirdSprite,
+        walkingBirds[index].birdPositionX,
+        walkingBirds[index].birdPositionY
+      );
+      walkingBirds[index].birdPositionX += walkingBirds[index].walkingSpeed;
     }
   }
 
@@ -283,17 +342,46 @@ function draw() {
     for (let shaker = 0; shaker < thrownShakers.length; shaker++) {
       const newShakerSprite = shakerSprite.get();
       const current = thrownShakers[shaker];
-      newShakerSprite.resize(shakerSprite.width * current.scale, shakerSprite.height * current.scale);
+      newShakerSprite.resize(
+        shakerSprite.width * current.scale,
+        shakerSprite.height * current.scale
+      );
+
       if (abs((current.positionY + newShakerSprite.height / 2) - current.dist) < speed) {
         thrownShakers.splice(shaker, 1);
         if (debug) console.log('At cross');
         for (let index = 0; index < flyingBirds.length; index++) {
-          if (debug) console.log(current.targetX, current.targetY, flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY);
-          if (collideRectRect(current.targetX, current.targetY, current.scale * shakerSprite.width, current.scale * shakerSprite.height, flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY, leftBirdSprite.width, leftBirdSprite.height)) {
+          if (debug) {
+            console.log(
+              current.targetX,
+              current.targetY,
+              flyingBirds[index].birdPositionX,
+              flyingBirds[index].birdPositionY
+            );
+          }
+
+          const didCollide = collideRectRect(
+            current.targetX,
+            current.targetY,
+            current.scale * shakerSprite.width,
+            current.scale * shakerSprite.height,
+            flyingBirds[index].birdPositionX,
+            flyingBirds[index].birdPositionY,
+            leftBirdSprite.width,
+            leftBirdSprite.height
+          );
+
+          if (didCollide) {
             if (debug) console.log('hit!');
             score++;
+
             // TODO: add new fallingBird to fallingBird array with position of this one
-            fallingBirds.push(new FallingBird(flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY, flyingBirds[index].isRightBird));
+            fallingBirds.push(new FallingBird(
+              flyingBirds[index].birdPositionX,
+              flyingBirds[index].birdPositionY,
+              flyingBirds[index].isRightBird
+            ));
+
             // deletes bird from array
             flyingBirds.splice(index, 1);
 

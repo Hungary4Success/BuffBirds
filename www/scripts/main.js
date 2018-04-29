@@ -49,6 +49,8 @@ function init() {
 
   const descriptionElement = document.getElementById('description');
   descriptionElement.innerText = errorDescription;
+  description.innerHTML += '<br />While our busy programmers are working on this issue, ';
+  description.innerText += ' try to make some of our birds buff!';
   descriptionElement.style.opacity = 1;
 }
 
