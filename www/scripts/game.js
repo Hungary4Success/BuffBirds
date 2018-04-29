@@ -172,7 +172,7 @@ function draw() {
     image(shakerSprite, positionX, 15, 25, 50);
   }
 
-  // Draw birds
+  // Draw flying birds
   for (let index = 0; index < flyingBirds.length; index++) {
     if (rightBirdSprite.loaded()) {
       if (flyingBirds[index].isRightBird) {
@@ -185,7 +185,6 @@ function draw() {
     } else {
       image(leftBirdSpriteImage, flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY);
     }
-
 
     if (flyingBirds[index].isRightBird) {
       flyingBirds[index].birdPositionX -= flyingBirds[index].birdVelocityX;
@@ -213,6 +212,21 @@ function draw() {
     }
   }
 
+  //Draw falling birds
+  for (let index = 0; index < fallingBirds.length; index++) {
+    if (rightBirdSprite.loaded()) {
+      if (fallingBirds[index].isRightBird) {
+        image(rightFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
+      } else {
+        image(leftFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
+      }
+    } else if (fallingBirds[index].isRightBird) {
+      image(rightFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
+    } else {
+      image(leftFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
+    }
+  }
+
   if (getMouseAngle() !== 'Mouse out of bounds') {
     mouseAngle = getMouseAngle();
   }
@@ -231,7 +245,7 @@ function draw() {
             console.log('hit!');
             score++;
             //TODO: add new fallingBird to fallingBird array with position of this one
-
+            fallingBirds.push(new FallingBird(flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY, flyingBirds[index].birdVelocityX, flyingBirds[index].birdVelocityY, flyingBirds[index.isRightBird]));
             //deletes bird from array
             flyingBirds.splice(index, 1);
           }
