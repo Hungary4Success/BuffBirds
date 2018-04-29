@@ -181,7 +181,7 @@ function draw() {
     image(shakerSprite, positionX, 15, 25, 50);
   }
 
-  // Draw birds
+  // Draw flying birds
   for (let index = 0; index < flyingBirds.length; index++) {
     if (rightBirdSprite.loaded()) {
       if (flyingBirds[index].isRightBird) {
@@ -226,6 +226,21 @@ function draw() {
     }
   }
 
+  //Draw falling birds
+  for (let index = 0; index < fallingBirds.length; index++) {
+    if (rightBirdSprite.loaded()) {
+      if (fallingBirds[index].isRightBird) {
+        image(rightFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
+      } else {
+        image(leftFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
+      }
+    } else if (fallingBirds[index].isRightBird) {
+      image(rightFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
+    } else {
+      image(leftFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
+    }
+  }
+
   if (getMouseAngle() !== 'Mouse out of bounds') {
     mouseAngle = getMouseAngle();
   }
@@ -247,10 +262,10 @@ function draw() {
           if (collideRectRect(current.targetX, current.targetY, current.scale * shakerSprite.width, current.scale * shakerSprite.height, flyingBirds[consuela].birdPositionX, flyingBirds[consuela].birdPositionY, leftBirdSprite.width, leftBirdSprite.height)) {
             console.log('hit!');
             score++;
-            // TODO: add new fallingBird to fallingBird array with position of this one
-
-            // deletes bird from array
-            flyingBirds.splice(consuela, 1);
+            //TODO: add new fallingBird to fallingBird array with position of this one
+            fallingBirds.push(new FallingBird(flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY, flyingBirds[index].birdVelocityX, flyingBirds[index].birdVelocityY, flyingBirds[index.isRightBird]));
+            //deletes bird from array
+            flyingBirds.splice(index, 1);
           }
         }
       }
