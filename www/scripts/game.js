@@ -51,7 +51,7 @@ let score = 0;
 let highScore = 0;
 let shakerCount = 7;
 
-const debug = true;
+const debug = false;
 
 function Ammo(targetX, targetY, scale, angle, dist) {
   this.targetX = targetX;
@@ -410,7 +410,13 @@ function windowResized() {
 function mouseClicked() {
   const angle = getMouseAngle();
   if (angle !== 'Mouse out of bounds' && shakerCount > 0) {
-    thrownShakers.push(new Ammo(mouseX, mouseY, 0.5, angle, -dist(anchorX, anchorY, mouseX, mouseY)));
+    thrownShakers.push(new Ammo(
+      mouseX,
+      mouseY,
+      0.5,
+      angle,
+      -dist(anchorX, anchorY, mouseX, mouseY)
+    ));
     shakerCount--;
   }
 
