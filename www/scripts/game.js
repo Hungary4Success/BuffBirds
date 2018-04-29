@@ -80,6 +80,7 @@ function FallingBird(birdPositionX, birdPositionY, isRightBird) {
 function WalkingBird(birdPositionX, birdPositionY, isRightBird) {
   this.birdPositionX = birdPositionX;
   this.birdPositionY = birdPositionY;
+  this.walkingSpeed = Math.random() * (2 - 1) + 1;
   this.isRightBird = isRightBird;
 }
 
@@ -306,14 +307,14 @@ function draw() {
         walkingBirds[index].birdPositionX,
         walkingBirds[index].birdPositionY
       );
-      walkingBirds[index].birdPositionX -= 1;
+      walkingBirds[index].birdPositionX -= walkingBirds[index].walkingSpeed;
     } else {
       image(
         leftWalkingBirdSprite,
         walkingBirds[index].birdPositionX,
         walkingBirds[index].birdPositionY
       );
-      walkingBirds[index].birdPositionX += 1;
+      walkingBirds[index].birdPositionX += walkingBirds[index].walkingSpeed;
     }
   }
 
