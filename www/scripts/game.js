@@ -283,9 +283,18 @@ function draw() {
             // TODO: add new fallingBird to fallingBird array with position of this one
             fallingBirds.push(new FallingBird(flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY, flyingBirds[index].isRightBird));
             // deletes bird from array
+<<<<<<< HEAD
             flyingBirds.splice(index, 1);
 
             flyingBirds.push(newBird());
+=======
+            flyingBirds.splice(consuela, 1);
+            let newBird = new FlyingBird(width + 1, randomGaussian(height / 2, height / 4), randomGaussian(birdVelocityXMean, birdVelocityXSTD), randomGaussian(birdVelocityYMean, birdVelocityYSTD), random(0, 100) < 50);
+            if (newBird.birdPositionsY > height * 0.7) {
+              newBird.birdPositionY = height * 0.6;
+            }
+            flyingBirds.push(newBird);
+>>>>>>> 0345c5246b8732f2121f9a8145722925cb8b1cce
           } // if collideRectRect()
         } // for consuela
       } // if abs()
