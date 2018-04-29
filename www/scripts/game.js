@@ -265,9 +265,9 @@ function draw() {
             console.log('hit!');
             score++;
             // TODO: add new fallingBird to fallingBird array with position of this one
-            fallingBirds.push(new FallingBird(flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY, flyingBirds[index.isRightBird]));
+            fallingBirds.push(new FallingBird(flyingBirds[consuela].birdPositionX, flyingBirds[consuela].birdPositionY, flyingBirds[consuela.isRightBird]));
             // deletes bird from array
-            flyingBirds.splice(index, 1);
+            flyingBirds.splice(consuela, 1);
           }
         }
       }
