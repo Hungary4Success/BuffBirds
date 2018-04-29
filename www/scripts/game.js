@@ -264,7 +264,7 @@ function draw() {
             fallingBirds.push(new FallingBird(flyingBirds[consuela].birdPositionX, flyingBirds[consuela].birdPositionY, flyingBirds[consuela].isRightBird));
             // deletes bird from array
             flyingBirds.splice(consuela, 1);
-            const newBird = new FlyingBird(width + 1, randomGaussian(height / 2, height / 4), randomGaussian(birdVelocityXMean, birdVelocityXSTD), randomGaussian(birdVelocityYMean, birdVelocityYSTD), random(0, 100) < 50);
+            let newBird = new FlyingBird(width + 1, randomGaussian(height / 2, height / 4), randomGaussian(birdVelocityXMean, birdVelocityXSTD), randomGaussian(birdVelocityYMean, birdVelocityYSTD), random(0, 100) < 50);
             if (newBird.birdPositionsY > height * 0.7) {
               newBird.birdPositionY = height * 0.6;
             }
