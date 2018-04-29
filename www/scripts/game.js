@@ -51,7 +51,7 @@ let score = 0;
 let highScore = 0;
 let shakerCount = 7;
 
-const debug = true;
+const debug = false;
 
 function Ammo(targetX, targetY, scale, angle, dist) {
   this.targetX = targetX;

@@ -18,7 +18,7 @@ body {
 }
 
 #title {
-  margin-bottom: 50px;
+  margin-bottom: 35px;
   text-align: center;
   opacity: 0;
 }
@@ -36,5 +36,5 @@ body {
 }
 
 #leadText {
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
