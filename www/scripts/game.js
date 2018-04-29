@@ -190,6 +190,10 @@ function draw() {
           if (collideRectRect(current.positionX, current.positionY, current.scale * shakerSprite.width, current.scale * shakerSprite.height, birds[index].birdPositionX, birds[index].birdPositionY, leftBirdSprite.width, leftBirdSprite.height)) {
             console.log('hit!');
             score++;
+            //TODO: add new fallingBird to fallingBird array with position of this one
+            
+            //deletes bird from array
+            birds.splice(index, 1);
           }
         }
         thrownShakers.splice(shaker, 1);
