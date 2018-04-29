@@ -188,7 +188,12 @@ function draw() {
     textSize(50);
     text(`SCORE: ${score}`, 285, 300);
 
-    if (score > highScore) highScore = score;
+    if (score > highScore) {
+      fill(238, 64, 86);
+      text('NEW HIGHSCORE!', 175, 375);
+      fill(0);
+      highScore = score;
+    }
   } else {
     // Draw score
     textSize(32);
