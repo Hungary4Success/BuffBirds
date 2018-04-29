@@ -1,7 +1,7 @@
 /* eslint strict: 0, no-unused-vars: 0, no-undef: 0 */
 
 'use strict';
-
+let birds;
 let isRightBirds;
 let birdPositionsX;
 let birdPositionsY;
@@ -89,31 +89,15 @@ function setup() {
   birdVelocityYMean = 0;
   birdVelocityYSTD = 0.2;
 
+  birds = [];
   startBirdNumber = 2;
-  isRightBirds = [startBirdNumber];
-  birdPositionsX = [startBirdNumber];
-  birdPositionsX = [startBirdNumber];
-  birdPositionsY = [startBirdNumber];
-  birdVelocitiesX = [startBirdNumber];
-  birdVelocitiesY = [startBirdNumber];
+  for (let i = 0; i < startBirdNumber; i++) {
+    birds[i] = new Bird(width + 1, randomGaussian(height / 2, height / 4), randomGaussian(birdVelocityXMean, birdVelocityXSTD), randomGaussian(birdVelocityYMean, birdVelocityYSTD), random(0, 100) < 50);
+    if (birds[i].birdPositionsY > height * 0.7) {
+      birds[index].birdPositionY = height * 0.6;
+    }
+  }
   thrownShakers = [];
-
-  for (let index = 0; index < startBirdNumber; index++) {
-    if (random(0, 100) < 50) {
-      isRightBirds[index] = true;
-    } else {
-      isRightBirds[index] = false;
-    }
-
-    birdPositionsY[index] = randomGaussian(height / 2, height / 4);
-    if (birdPositionsY[index] > height * 0.7) {
-      birdPositionsY[index] = height * 0.6;
-    }
-
-    birdPositionsX[index] = width + 10;
-    birdVelocitiesX[index] = randomGaussian(birdVelocityXMean, birdVelocityXSTD);
-    birdVelocitiesY[index] = randomGaussian(birdVelocityYMean, birdVelocityYSTD);
-  } // for index
 }
 
 function draw() {
@@ -149,43 +133,43 @@ function draw() {
   }
 
   // Draw birds
-  for (let index = 0; index < birdPositionsX.length; index++) {
+  for (let index = 0; index < birds.length; index++) {
     if (rightBirdSprite.loaded()) {
-      if (isRightBirds[index]) {
-        image(rightBirdSprite, birdPositionsX[index], birdPositionsY[index]);
+      if (birds[index].isRightBird) {
+        image(rightBirdSprite, birds[index].birdPositionX, birds[index].birdPositionY);
       } else {
-        image(leftBirdSprite, birdPositionsX[index], birdPositionsY[index]);
+        image(leftBirdSprite, birds[index].birdPositionX, birds[index].birdPositionY);
       }
-    } else if (isRightBirds[index]) {
-      image(rightBirdSpriteImage, birdPositionsX[index], birdPositionsY[index]);
+    } else if (birds[index].isRightBird) {
+      image(rightBirdSpriteImage, birds[index].birdPositionX, birds[index].birdPositionY);
     } else {
-      image(leftBirdSpriteImage, birdPositionsX[index], birdPositionsY[index]);
+      image(leftBirdSpriteImage, birds[index].birdPositionX, birds[index].birdPositionY);
     }
 
 
-    if (isRightBirds[index]) {
-      birdPositionsX[index] -= birdVelocitiesX[index];
+    if (birds[index].isRightBird) {
+      birds[index].birdPositionX -= birds[index].birdVelocityX;
     } else {
-      birdPositionsX[index] += birdVelocitiesX[index];
+      birds[index].birdPositionX += birds[index].birdVelocityX;
     }
-    birdPositionsY[index] += birdVelocitiesY[index];
+    birds[index].birdPositionY += birds[index].birdVelocityY;
 
-    birdVelocitiesX[index] += randomGaussian(birdVelocityXMean, birdVelocityXSTD);
-    birdVelocitiesY[index] += randomGaussian(birdVelocityYMean, birdVelocityYSTD);
+    birds[index].birdVelocityX += randomGaussian(birdVelocityXMean, birdVelocityXSTD);
+    birds[index].birdVelocityY += randomGaussian(birdVelocityYMean, birdVelocityYSTD);
 
-    if (isRightBirds[index] && birdPositionsX[index] < -leftBirdSprite.width) {
-      birdPositionsX[index] = width + rightBirdSprite.width;
-      birdVelocitiesX[index] = 0;
-      birdVelocitiesY[index] = 0;
-    } else if (!isRightBirds[index] && birdPositionsX[index] > width) {
-      birdPositionsX[index] = -leftBirdSprite.width - 10;
-      birdVelocitiesX[index] = 0;
-      birdVelocitiesY[index] = 0;
+    if (birds[index].isRightBird && birds[index].birdPositionX < -leftBirdSprite.width) {
+      birds[index].birdPositionX = width + rightBirdSprite.width;
+      birds[index].birdVelocityX = 0;
+      birds[index].birdVelocityY = 0;
+    } else if (!birds[index].isRightBird && birds[index].birdPositionX > width) {
+      birds[index].birdPositionX = -leftBirdSprite.width - 10;
+      birds[index].birdVelocityX = 0;
+      birds[index].birdVelocityY = 0;
     }
-    if (birdPositionsY[index] > height * 0.65) {
-      birdPositionsY[index] = height * 0.65;
-    } else if (birdPositionsY[index] < 0) {
-      birdPositionsY[index] = 0;
+    if (birds[index].birdPositionY > height * 0.65) {
+      birds[index].birdPositionY = height * 0.65;
+    } else if (birds[index].birdPositionY < 0) {
+      birds[index].birdPositionY = 0;
     }
   }
 
@@ -202,8 +186,8 @@ function draw() {
       if (
         abs((current.positionX + shakerSprite.width * current.scale / 2) - current.targetX) < shakerSprite.width * current.scale / 2 &&
         abs(current.positionY - current.targetY) < shakerSprite.height * current.scale / 8) {
-        for (let index = 0; index < birdPositionsX.length; index++) {
-          if (collideRectRect(current.positionX, current.positionY, current.scale * shakerSprite.width, current.scale * shakerSprite.height, birdPositionsX[index], birdPositionsY[index], leftBirdSprite.width, leftBirdSprite.height)) {
+        for (let index = 0; index < birds.length; index++) {
+          if (collideRectRect(current.positionX, current.positionY, current.scale * shakerSprite.width, current.scale * shakerSprite.height, birds[index].birdPositionX, birds[index].birdPositionY, leftBirdSprite.width, leftBirdSprite.height)) {
             console.log('hit!');
             score++;
           }
