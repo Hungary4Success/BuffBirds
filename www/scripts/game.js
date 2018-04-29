@@ -197,6 +197,7 @@ function draw() {
         for (let index = 0; index < birdPositionsX.length; index++) {
           if (collideRectRect(current.positionX, current.positionY, current.scale * shakerSprite.width, current.scale * shakerSprite.height, birdPositionsX[index], birdPositionsY[index], leftBirdSprite.width, leftBirdSprite.height)) {
             console.log('hit!');
+            score++;
           }
         }
         thrownShakers.splice(shaker, 1);
@@ -227,12 +228,10 @@ function mouseClicked() {
   if (angle !== 'Mouse out of bounds') {
     thrownShakers.push(new Ammo(mouseX, mouseY, width / 2 - (shakerSprite.width / 4), height, 0.5));
   }
-  score++;
   if (shakerCount === 0) {
     shakerCount = 8;
     score = 0;
   } else {
-    score++;
     shakerCount--;
   }
 
