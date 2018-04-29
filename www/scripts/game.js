@@ -403,12 +403,13 @@ function mouseClicked() {
       angle,
       -dist(anchorX, anchorY, mouseX, mouseY)
     ));
-  }
-  if (shakerCount === 0) {
-    shakerCount = 8;
-    score = 0;
-  } else {
-    shakerCount--;
+
+    if (shakerCount === 0) {
+      shakerCount = 8;
+      score = 0;
+    } else {
+      shakerCount--;
+    }
   }
 }
 
