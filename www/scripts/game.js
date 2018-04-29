@@ -197,7 +197,7 @@ function draw() {
       text(`LEVEL: ${level}`, 285, 300);
       if (level >= highScore) {
         fill(238, 64, 86);
-        text('HIGHSCORE!', 175, 375);
+        text('HIGHSCORE!', 250, 375);
         fill(0);
         highScore = level;
       }
