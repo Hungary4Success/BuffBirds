@@ -2,6 +2,8 @@
 
 'use strict';
 let flyingBirds;
+let fallingBirds;
+let walkingBirds;
 let isRightBirds;
 let birdPositionsX;
 let birdPositionsY;
@@ -17,6 +19,13 @@ let leftBirdSprite;
 let leftBirdSpriteImage;
 let rightBirdSprite;
 let rightBirdSpriteImage;
+
+let leftFallingBirdSpriteImage;
+let rightFallingBirdSpriteImage;
+
+let rightWalkingBirdSprite;
+let rightWalkingBirdSpriteImage;
+
 let backgroundImage;
 let crosshairImage;
 
@@ -50,6 +59,22 @@ function FlyingBird(birdPositionX, birdPositionY, birdVelocityX, birdVelocityY, 
   this.isRightBird = isRightBird;
 }
 
+function FallingBird(birdPositionX, birdPositionY, birdVelocityX, birdVelocityY, isRightBird) {
+  this.birdPositionX = birdPositionX;
+  this.birdPositionY = birdPositionY;
+  this.birdVelocityX = birdVelocityX;
+  this.birdVelocityY = birdVelocityY;
+  this.isRightBird = isRightBird;
+}
+
+function WalkingBird(birdPositionX, birdPositionY, birdVelocityX, birdVelocityY, isRightBird) {
+  this.birdPositionX = birdPositionX;
+  this.birdPositionY = birdPositionY;
+  this.birdVelocityX = birdVelocityX;
+  this.birdVelocityY = birdVelocityY;
+  this.isRightBird = isRightBird;
+}
+
 function getCanvasDimensions() {
   return { width: 800, height: 500 };
 }
@@ -62,6 +87,12 @@ function preload() {
     rightBirdSpriteImage = loadImage('./res/images/rightbird.gif');
     leftBirdSpriteImage = loadImage('./res/images/leftbird.gif');
 
+    rightFallingBirdSpriteImage = loadImage('./res/images/rightbuffbird.png');
+    leftFallingBirdSpriteImage = loadImage('./res/images/leftbuffbird.png');
+
+    rightWalkingBirdSprite = loadGif('./res/images/buffbirdmove.gif');
+    rightWalkingBirdSpriteImage = loadImage('./res/images/buffbirdmove.gif');
+
     backgroundImage = loadImage('./res/images/background.png');
     shakerSprite = loadImage('./res/images/shaker.png');
     font = loadFont('./res/fonts/SFPixelate.ttf');
@@ -70,6 +101,12 @@ function preload() {
     rightBirdSprite = loadGif('./res/images/rightbird.gif');
     rightBirdSpriteImage = loadImage('./res/images/rightbird.gif');
     leftBirdSpriteImage = loadImage('./res/images/leftbird.gif');
+
+    rightFallingBirdSpriteImage = loadImage('./res/images/rightbuffbird.png');
+    leftFallingBirdSpriteImage = loadImage('./res/images/leftbuffbird.png');
+
+    rightWalkingBirdSprite = loadGif('./res/images/buffbirdmove.gif');
+    rightWalkingBirdSpriteImage = loadImage('./res/images/buffbirdmove.gif');
 
     backgroundImage = loadImage('./res/images/background.png');
     shakerSprite = loadImage('./res/images/shaker.png');
@@ -90,6 +127,9 @@ function setup() {
   birdVelocityYSTD = 0.2;
 
   flyingBirds = [];
+  fallingBirds = [];
+  walkingBirds = [];
+
   startBirdNumber = 2;
   for (let i = 0; i < startBirdNumber; i++) {
     flyingBirds[i] = new FlyingBird(width + 1, randomGaussian(height / 2, height / 4), randomGaussian(birdVelocityXMean, birdVelocityXSTD), randomGaussian(birdVelocityYMean, birdVelocityYSTD), random(0, 100) < 50);
