@@ -84,7 +84,14 @@ function getCanvasDimensions() {
 }
 
 function newBird() {
-  const retValue = new FlyingBird(width + 1, randomGaussian(height / 2, height / 4), randomGaussian(birdVelocityXMean, birdVelocityXSTD), randomGaussian(birdVelocityYMean, birdVelocityYSTD), random(0, 100) < 50);
+  const isGoingToBeRight = random(0, 100) < 50;
+  let posX;
+  if (isGoingToBeRight) {
+    posX = width + rightBirdSprite.width;
+  } else {
+    posX = -leftBirdSprite.width - 10;
+  }
+  const retValue = new FlyingBird(posX, randomGaussian(height / 2, height / 4), randomGaussian(birdVelocityXMean, birdVelocityXSTD), randomGaussian(birdVelocityYMean, birdVelocityYSTD), isGoingToBeRight);
   if (retValue.birdPositionsY > height * 0.7) {
     retValue.birdPositionY = height * 0.6;
   }
@@ -237,6 +244,18 @@ function draw() {
       fallingBirds[index].birdVelocityY += 0.3;
     } else {
       walkingBirds.push(new WalkingBird(fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY, fallingBirds[index].isRightBird));
+      fallingBirds.splice(index, 1);
+    }
+  }
+
+  // Draw walking birds
+  for (let index = 0; index < walkingBirds.length; index++) {
+    if (walkingBirds[index].isRightBird) {
+      image(rightWalkingBirdSprite, walkingBirds[index].birdPositionX, walkingBirds[index].birdPositionY);
+      walkingBirds[index].birdPositionX -= 1;
+    } else {
+      image(rightWalkingBirdSprite, walkingBirds[index].birdPositionX, walkingBirds[index].birdPositionY);
+      walkingBirds[index].birdPositionX += 1;
     }
   }
 
