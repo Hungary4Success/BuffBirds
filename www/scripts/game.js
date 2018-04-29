@@ -194,14 +194,14 @@ function draw() {
       textSize(60);
       text('GAME OVER', 215, 225);
       textSize(50);
-      text(`SCORE: ${score}`, 285, 300);
-    }
-
-    if (level > highScore) {
-      fill(238, 64, 86);
-      text('NEW HIGHSCORE!', 175, 375);
-      fill(0);
-      highScore = level;
+      text(`LEVEL: ${level}`, 285, 300);
+      console.log(level, highScore);
+      if (level >= highScore) {
+        fill(238, 64, 86);
+        text('NEW HIGHSCORE!', 175, 375);
+        fill(0);
+        highScore = level;
+      }
     }
   } else {
     // Draw score
