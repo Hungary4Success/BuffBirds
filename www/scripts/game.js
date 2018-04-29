@@ -193,7 +193,7 @@ function draw() {
     } else {
       image(leftBirdSpriteImage, flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY);
     }
-    
+
     if (debug) {
       flyingBirds[index].birdVelocityX = 1;
       flyingBirds[index].birdVelocityY = 0;
@@ -227,13 +227,7 @@ function draw() {
 
   // Draw falling birds
   for (let index = 0; index < fallingBirds.length; index++) {
-    if (rightBirdSprite.loaded()) {
-      if (fallingBirds[index].isRightBird) {
-        image(rightFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
-      } else {
-        image(leftFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
-      }
-    } else if (fallingBirds[index].isRightBird) {
+    if (fallingBirds[index].isRightBird) {
       image(rightFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
     } else {
       image(leftFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
@@ -265,7 +259,7 @@ function draw() {
             console.log('hit!');
             score++;
             // TODO: add new fallingBird to fallingBird array with position of this one
-            fallingBirds.push(new FallingBird(flyingBirds[consuela].birdPositionX, flyingBirds[consuela].birdPositionY, flyingBirds[consuela.isRightBird]));
+            fallingBirds.push(new FallingBird(flyingBirds[consuela].birdPositionX, flyingBirds[consuela].birdPositionY, flyingBirds[consuela].isRightBird));
             // deletes bird from array
             flyingBirds.splice(consuela, 1);
           }
