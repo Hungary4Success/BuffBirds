@@ -66,11 +66,10 @@ function FlyingBird(birdPositionX, birdPositionY, birdVelocityX, birdVelocityY, 
   this.isRightBird = isRightBird;
 }
 
-function FallingBird(birdPositionX, birdPositionY, birdVelocityX, birdVelocityY, isRightBird) {
+function FallingBird(birdPositionX, birdPositionY, isRightBird) {
   this.birdPositionX = birdPositionX;
   this.birdPositionY = birdPositionY;
-  this.birdVelocityX = birdVelocityX;
-  this.birdVelocityY = birdVelocityY;
+  this.birdVelocityY = -5;
   this.isRightBird = isRightBird;
 }
 
@@ -228,17 +227,14 @@ function draw() {
 
   // Draw falling birds
   for (let index = 0; index < fallingBirds.length; index++) {
-    if (rightBirdSprite.loaded()) {
-      if (fallingBirds[index].isRightBird) {
-        image(rightFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
-      } else {
-        image(leftFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
-      }
-    } else if (fallingBirds[index].isRightBird) {
+    if (fallingBirds[index].isRightBird) {
       image(rightFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
     } else {
       image(leftFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
     }
+
+    fallingBirds[index].birdPositionY += fallingBirds[index].birdVelocityY;
+    fallingBirds[index].birdVelocityY += 0.3;
   }
 
   if (getMouseAngle() !== 'Mouse out of bounds') {
@@ -249,26 +245,31 @@ function draw() {
 
   // Draw flying shakers
   if (thrownShakers.length > 0) {
-    const speed = 20;
+    const speed = 30;
     for (let shaker = 0; shaker < thrownShakers.length; shaker++) {
       const newShakerSprite = shakerSprite.get();
       const current = thrownShakers[shaker];
       newShakerSprite.resize(shakerSprite.width * current.scale, shakerSprite.height * current.scale);
       if (abs((current.positionY + newShakerSprite.height / 2) - current.dist) < speed) {
         thrownShakers.splice(shaker, 1);
-        console.log('At cross');
+        if (debug) console.log('At cross');
         for (let consuela = 0; consuela < flyingBirds.length; consuela++) {
-          console.log(current.targetX, current.targetY, flyingBirds[consuela].birdPositionX, flyingBirds[consuela].birdPositionY);
+          if (debug) console.log(current.targetX, current.targetY, flyingBirds[consuela].birdPositionX, flyingBirds[consuela].birdPositionY);
           if (collideRectRect(current.targetX, current.targetY, current.scale * shakerSprite.width, current.scale * shakerSprite.height, flyingBirds[consuela].birdPositionX, flyingBirds[consuela].birdPositionY, leftBirdSprite.width, leftBirdSprite.height)) {
-            console.log('hit!');
+            if (debug) console.log('hit!');
             score++;
             // TODO: add new fallingBird to fallingBird array with position of this one
-            fallingBirds.push(new FallingBird(flyingBirds[consuela].birdPositionX, flyingBirds[consuela].birdPositionY, flyingBirds[consuela].birdVelocityX, flyingBirds[consuela].birdVelocityY, flyingBirds[consuela.isRightBird]));
+            fallingBirds.push(new FallingBird(flyingBirds[consuela].birdPositionX, flyingBirds[consuela].birdPositionY, flyingBirds[consuela].isRightBird));
             // deletes bird from array
             flyingBirds.splice(consuela, 1);
-          }
-        }
-      }
+            const newBird = new FlyingBird(width + 1, randomGaussian(height / 2, height / 4), randomGaussian(birdVelocityXMean, birdVelocityXSTD), randomGaussian(birdVelocityYMean, birdVelocityYSTD), random(0, 100) < 50);
+            if (newBird.birdPositionsY > height * 0.7) {
+              newBird.birdPositionY = height * 0.6;
+            }
+            flyingBirds.push(newBird);
+          } // if collideRectRect()
+        } // for consuela
+      } // if abs()
       push();
       translate(anchorX, anchorY);
       rotate(current.angle);
@@ -276,7 +277,7 @@ function draw() {
       pop();
 
       current.positionY -= speed;
-      current.scale -= 0.01;
+      current.scale -= 0.015;
     }
   }
 } // for index
