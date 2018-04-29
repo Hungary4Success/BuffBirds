@@ -225,7 +225,7 @@ function windowResized() {
 
 function mouseClicked() {
   const angle = getMouseAngle();
-  if (angle !== 'Mouse out of bounds') {
+  if (angle !== 'Mouse out of bounds' && shakerCount > 0) {
     thrownShakers.push(new Ammo(mouseX, mouseY, width / 2 - (shakerSprite.width / 4), height, 0.5));
   }
   if (shakerCount === 0) {
