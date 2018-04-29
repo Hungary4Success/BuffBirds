@@ -44,14 +44,14 @@ let thrownShakers;
 let shakerSprite;
 let mouseAngle;
 
-const level = 0;
+let level = 0;
 
 let startBirdNumber;
 let score = 0;
 let highScore = 0;
 let shakerCount = 7;
 
-const debug = false;
+const debug = true;
 
 function Ammo(targetX, targetY, scale, angle, dist) {
   this.targetX = targetX;
@@ -183,23 +183,35 @@ function draw() {
   background(backgroundImage);
 
   if (shakerCount <= 0) {
-    // Draw end screen
-    textSize(60);
-    text('GAME OVER', 215, 225);
-    textSize(50);
-    text(`SCORE: ${score}`, 285, 300);
+    if (score === 7) {
+      score = 0;
+      shakerCount = 7;
+      birdVelocityXMean += 0.01;
+      birdVelocityXSTD = birdVelocityXMean - 0.00001;
+      level++;
+    } else if (thrownShakers.length === 0) {
+      // Draw end screen
+      textSize(60);
+      text('GAME OVER', 215, 225);
+      textSize(50);
+      text(`SCORE: ${score}`, 285, 300);
+    }
 
-    if (score > highScore) {
+    if (level > highScore) {
       fill(238, 64, 86);
       text('NEW HIGHSCORE!', 175, 375);
       fill(0);
-      highScore = score;
+      highScore = level;
     }
   } else {
     // Draw score
     textSize(32);
     textFont(font);
     text(`SCORE: ${score}`, 15, 50);
+
+    textSize(32);
+    textFont(font);
+    text(`LEVEL: ${level}`, 300, 50);
 
     // Draw current shaker
     push();
@@ -399,18 +411,21 @@ function mouseClicked() {
   const angle = getMouseAngle();
   if (angle !== 'Mouse out of bounds' && shakerCount > 0) {
     thrownShakers.push(new Ammo(
-      mouseX, mouseY,
+      mouseX,
+      mouseY,
       0.5,
       angle,
       -dist(anchorX, anchorY, mouseX, mouseY)
     ));
+    shakerCount--;
   }
 
-  if (shakerCount === 0) {
-    shakerCount = 8;
+  if (shakerCount <= 0 && thrownShakers.length <= 0 && score < 7) {
     score = 0;
-  } else {
-    shakerCount--;
+    level = 0;
+    shakerCount = 7;
+    birdVelocityXMean = 0.05;
+    birdVelocityXSTD = birdVelocityXMean - 0.00001;
   }
 }
 
