@@ -30,6 +30,9 @@ let rightFallingBirdSpriteImage;
 let rightWalkingBirdSprite;
 let rightWalkingBirdSpriteImage;
 
+let leftWalkingBirdSprite;
+let leftWalkingBirdSpriteImage;
+
 let backgroundImage;
 let crosshairImage;
 
@@ -109,8 +112,11 @@ function preload() {
     rightFallingBirdSpriteImage = loadImage('./res/images/rightbuffbird.png');
     leftFallingBirdSpriteImage = loadImage('./res/images/leftbuffbird.png');
 
-    rightWalkingBirdSprite = loadGif('./res/images/buffbirdmove.gif');
-    rightWalkingBirdSpriteImage = loadImage('./res/images/buffbirdmove.gif');
+    rightWalkingBirdSprite = loadGif('./res/images/rightbuffbirdmove.gif');
+    rightWalkingBirdSpriteImage = loadImage('./res/images/rightbuffbirdmove.gif');
+
+    leftWalkingBirdSprite = loadGif('./res/images/leftbuffbirdmove.gif');
+    leftWalkingBirdSpriteImage = loadImage('./res/images/leftbuffbirdmove.gif');
 
     backgroundImage = loadImage('./res/images/background.png');
     shakerSprite = loadImage('./res/images/shaker.png');
@@ -126,6 +132,9 @@ function preload() {
 
     rightWalkingBirdSprite = loadGif('./res/images/buffbirdmove.gif');
     rightWalkingBirdSpriteImage = loadImage('./res/images/buffbirdmove.gif');
+
+    leftWalkingBirdSprite = loadGif('./res/images/leftbuffbirdmove.gif');
+    leftWalkingBirdSpriteImage = loadImage('./res/images/leftbuffbirdmove.gif');
 
     backgroundImage = loadImage('./res/images/background.png');
     shakerSprite = loadImage('./res/images/shaker.png');
