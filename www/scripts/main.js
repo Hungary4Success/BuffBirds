@@ -6,41 +6,36 @@ function init() {
   let errorName;
   let errorDescription;
 
-  try {
-    const { pathname } = window.location;
-    let errorCode = parseInt(pathname.substring(1, pathname.length), 10);
-    if (pathname === '/') errorCode = 404;
 
-    const errorCategory = Math.floor(errorCode / 100);
-    const errorNumber = errorCode % 100;
+  const { pathname } = window.location;
+  let errorCode = parseInt(pathname.substring(1, pathname.length), 10);
+  if (pathname === '/') errorCode = 404;
 
-    switch (errorCategory) {
-      case 4:
-        if (errorNumber > errorNames400.length - 1) {
-          throw new Error('Invalid error code');
-        }
+  const errorCategory = Math.floor(errorCode / 100);
+  const errorNumber = errorCode % 100;
 
-        errorName = errorNames400[errorNumber];
-        errorDescription = errorDescriptions400[errorNumber];
-        break;
-      case 5:
-        if (errorNumber > errorNames500.length - 1) {
-          throw new Error('Invalid error code');
-        }
+  switch (errorCategory) {
+    case 4:
+      if (errorNumber > errorNames400.length - 1) {
+        throw new Error('Invalid error code');
+      }
 
-        errorName = errorNames500[errorNumber];
-        errorDescription = errorDescriptions500[errorNumber];
-        break;
-      default:
-        errorName = 'Unknown Error';
-        break;
-    }
+      errorName = `${errorCode} - ${errorNames400[errorNumber]}`;
+      errorDescription = errorDescriptions400[errorNumber];
+      break;
+    case 5:
+      if (errorNumber > errorNames500.length - 1) {
+        throw new Error('Invalid error code');
+      }
 
-    errorName = `${errorCode} - ${errorName}`;
-  } catch (exception) {
-    errorName = 'Invalid Error Code';
-    errorDescription = 'Please specify an error code in the range 400 <= n <= 418';
-    errorDescription += ' or 500 <= n <= 511';
+      errorName = `${errorCode} - ${errorNames500[errorNumber]}`;
+      errorDescription = errorDescriptions500[errorNumber];
+      break;
+    default:
+      errorName = 'Invalid Error Code';
+      errorDescription = 'Please specify an error code in the range 400 <= n <= 418';
+      errorDescription += ' or 500 <= n <= 511';
+      break;
   }
 
   const titleElement = document.getElementById('title');
