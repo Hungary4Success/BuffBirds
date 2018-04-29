@@ -6,6 +6,9 @@ let isRightBirds;
 let birdPositionsX;
 let birdPositionsY;
 
+let anchorX;
+let anchorY;
+
 let birdVelocitiesX;
 let birdVelocitiesY;
 let birdVelocityXMean;
@@ -34,12 +37,11 @@ let startBirdNumber;
 let score = 0;
 let shakerCount = 7;
 
-function Ammo(targetX, targetY, posX, posY, scale) {
-  this.targetX = targetX;
+function Ammo(targetX, targetY, scale, angle) {
   this.targetY = targetY;
-  this.positionX = posX;
-  this.positionY = posY;
+  this.positionY = 0;
   this.scale = scale;
+  this.angle = angle;
 }
 
 function getCanvasDimensions() {
@@ -75,6 +77,8 @@ function setup() {
   canvas.parent('container');
 
   noCursor();
+  anchorX = width / 2;
+  anchorY = height;
 
   birdVelocityXMean = 0.1;
   birdVelocityXSTD = birdVelocityXMean - 0.00001;
@@ -127,9 +131,9 @@ function draw() {
 
     // Draw current shaker
     push();
-    translate(width / 2, height + 20);
+    translate(anchorX, anchorY);
     rotate(mouseAngle);
-    image(shakerSprite, -75 / 2, -130, 75, 170);
+    image(shakerSprite, -75 / 2, -60, 75, 170);
     pop();
   }
 
@@ -187,26 +191,25 @@ function draw() {
 
   image(crosshairImage, mouseX - 25, mouseY - 25, 50, 50);
 
+  // Draw flying shakers
   if (thrownShakers.length > 0) {
-    let newShakerSprite = shakerSprite.get();
+    const speed = 20;
     for (let shaker = 0; shaker < thrownShakers.length; shaker++) {
+      const newShakerSprite = shakerSprite.get();
       const current = thrownShakers[shaker];
-      if (
-        abs((current.positionX + shakerSprite.width * current.scale / 2) - current.targetX) < shakerSprite.width * current.scale / 2 &&
-        abs(current.positionY - current.targetY) < shakerSprite.height * current.scale / 8) {
-        thrownShakers.splice(shaker, 1);
-        console.log('at position');
-      } // if
       newShakerSprite.resize(shakerSprite.width * current.scale, shakerSprite.height * current.scale);
-      image(newShakerSprite, current.positionX, current.positionY);
+      if (abs((current.positionY + newShakerSprite.height / 2) - current.targetY) < speed) {
+        thrownShakers.splice(shaker, 1);
+        console.log('At cross');
+      }
+      push();
+      translate(anchorX, anchorY);
+      rotate(current.angle);
+      image(newShakerSprite, -75 / 2, current.positionY);
+      pop();
 
-      const speed = 0.06;
-      const xDist = (current.targetX - shakerSprite.width / 8) - (width / 2 - (shakerSprite.width / 4));
-      const yDist = current.targetY - height;
-      current.positionX += xDist * speed;
-      current.positionY += yDist * speed;
+      current.positionY -= speed;
       current.scale -= 0.01;
-      console.log(current.scale);
     }
   }
 } // for index
@@ -220,7 +223,7 @@ function windowResized() {
 function mouseClicked() {
   const angle = getMouseAngle();
   if (angle !== 'Mouse out of bounds') {
-    thrownShakers.push(new Ammo(mouseX, mouseY, width / 2 - (shakerSprite.width / 4), height, 0.5));
+    thrownShakers.push(new Ammo(0, -dist(anchorX, anchorY, mouseX, mouseY), 0.5, angle));
   }
   score++;
   if (shakerCount === 0) {
@@ -230,8 +233,6 @@ function mouseClicked() {
     score++;
     shakerCount--;
   }
-
-  console.log(getMouseAngle());
 }
 
 function getMouseAngle() {
