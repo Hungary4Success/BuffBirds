@@ -66,11 +66,10 @@ function FlyingBird(birdPositionX, birdPositionY, birdVelocityX, birdVelocityY, 
   this.isRightBird = isRightBird;
 }
 
-function FallingBird(birdPositionX, birdPositionY, birdVelocityX, birdVelocityY, isRightBird) {
+function FallingBird(birdPositionX, birdPositionY, isRightBird) {
   this.birdPositionX = birdPositionX;
   this.birdPositionY = birdPositionY;
-  this.birdVelocityX = birdVelocityX;
-  this.birdVelocityY = birdVelocityY;
+  this.birdVelocityY = -5;
   this.isRightBird = isRightBird;
 }
 
@@ -226,7 +225,7 @@ function draw() {
     }
   }
 
-  //Draw falling birds
+  // Draw falling birds
   for (let index = 0; index < fallingBirds.length; index++) {
     if (rightBirdSprite.loaded()) {
       if (fallingBirds[index].isRightBird) {
@@ -239,6 +238,9 @@ function draw() {
     } else {
       image(leftFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
     }
+
+    fallingBirds[index].birdPositionY += fallingBirds[index].birdVelocityY;
+    fallingBirds[index].birdVelocityY += 0.3;
   }
 
   if (getMouseAngle() !== 'Mouse out of bounds') {
@@ -262,9 +264,9 @@ function draw() {
           if (collideRectRect(current.targetX, current.targetY, current.scale * shakerSprite.width, current.scale * shakerSprite.height, flyingBirds[consuela].birdPositionX, flyingBirds[consuela].birdPositionY, leftBirdSprite.width, leftBirdSprite.height)) {
             console.log('hit!');
             score++;
-            //TODO: add new fallingBird to fallingBird array with position of this one
-            fallingBirds.push(new FallingBird(flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY, flyingBirds[index].birdVelocityX, flyingBirds[index].birdVelocityY, flyingBirds[index.isRightBird]));
-            //deletes bird from array
+            // TODO: add new fallingBird to fallingBird array with position of this one
+            fallingBirds.push(new FallingBird(flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY, flyingBirds[index.isRightBird]));
+            // deletes bird from array
             flyingBirds.splice(index, 1);
           }
         }
