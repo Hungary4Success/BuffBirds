@@ -1,7 +1,7 @@
 /* eslint strict: 0, no-unused-vars: 0, no-undef: 0 */
 
 'use strict';
-let birds;
+let flyingBirds;
 let isRightBirds;
 let birdPositionsX;
 let birdPositionsY;
@@ -42,7 +42,7 @@ function Ammo(targetX, targetY, posX, posY, scale) {
   this.scale = scale;
 }
 
-function Bird(birdPositionX, birdPositionY, birdVelocityX, birdVelocityY, isRightBird) {
+function FlyingBird(birdPositionX, birdPositionY, birdVelocityX, birdVelocityY, isRightBird) {
   this.birdPositionX = birdPositionX;
   this.birdPositionY = birdPositionY;
   this.birdVelocityX = birdVelocityX;
@@ -89,12 +89,12 @@ function setup() {
   birdVelocityYMean = 0;
   birdVelocityYSTD = 0.2;
 
-  birds = [];
+  flyingBirds = [];
   startBirdNumber = 2;
   for (let i = 0; i < startBirdNumber; i++) {
-    birds[i] = new Bird(width + 1, randomGaussian(height / 2, height / 4), randomGaussian(birdVelocityXMean, birdVelocityXSTD), randomGaussian(birdVelocityYMean, birdVelocityYSTD), random(0, 100) < 50);
-    if (birds[i].birdPositionsY > height * 0.7) {
-      birds[index].birdPositionY = height * 0.6;
+    flyingBirds[i] = new FlyingBird(width + 1, randomGaussian(height / 2, height / 4), randomGaussian(birdVelocityXMean, birdVelocityXSTD), randomGaussian(birdVelocityYMean, birdVelocityYSTD), random(0, 100) < 50);
+    if (flyingBirds[i].birdPositionsY > height * 0.7) {
+      flyingBirds[index].birdPositionY = height * 0.6;
     }
   }
   thrownShakers = [];
@@ -133,43 +133,43 @@ function draw() {
   }
 
   // Draw birds
-  for (let index = 0; index < birds.length; index++) {
+  for (let index = 0; index < flyingBirds.length; index++) {
     if (rightBirdSprite.loaded()) {
-      if (birds[index].isRightBird) {
-        image(rightBirdSprite, birds[index].birdPositionX, birds[index].birdPositionY);
+      if (flyingBirds[index].isRightBird) {
+        image(rightBirdSprite, flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY);
       } else {
-        image(leftBirdSprite, birds[index].birdPositionX, birds[index].birdPositionY);
+        image(leftBirdSprite, flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY);
       }
-    } else if (birds[index].isRightBird) {
-      image(rightBirdSpriteImage, birds[index].birdPositionX, birds[index].birdPositionY);
+    } else if (flyingBirds[index].isRightBird) {
+      image(rightBirdSpriteImage, flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY);
     } else {
-      image(leftBirdSpriteImage, birds[index].birdPositionX, birds[index].birdPositionY);
+      image(leftBirdSpriteImage, flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY);
     }
 
 
-    if (birds[index].isRightBird) {
-      birds[index].birdPositionX -= birds[index].birdVelocityX;
+    if (flyingBirds[index].isRightBird) {
+      flyingBirds[index].birdPositionX -= flyingBirds[index].birdVelocityX;
     } else {
-      birds[index].birdPositionX += birds[index].birdVelocityX;
+      flyingBirds[index].birdPositionX += flyingBirds[index].birdVelocityX;
     }
-    birds[index].birdPositionY += birds[index].birdVelocityY;
+    flyingBirds[index].birdPositionY += flyingBirds[index].birdVelocityY;
 
-    birds[index].birdVelocityX += randomGaussian(birdVelocityXMean, birdVelocityXSTD);
-    birds[index].birdVelocityY += randomGaussian(birdVelocityYMean, birdVelocityYSTD);
+    flyingBirds[index].birdVelocityX += randomGaussian(birdVelocityXMean, birdVelocityXSTD);
+    flyingBirds[index].birdVelocityY += randomGaussian(birdVelocityYMean, birdVelocityYSTD);
 
-    if (birds[index].isRightBird && birds[index].birdPositionX < -leftBirdSprite.width) {
-      birds[index].birdPositionX = width + rightBirdSprite.width;
-      birds[index].birdVelocityX = 0;
-      birds[index].birdVelocityY = 0;
-    } else if (!birds[index].isRightBird && birds[index].birdPositionX > width) {
-      birds[index].birdPositionX = -leftBirdSprite.width - 10;
-      birds[index].birdVelocityX = 0;
-      birds[index].birdVelocityY = 0;
+    if (flyingBirds[index].isRightBird && flyingBirds[index].birdPositionX < -leftBirdSprite.width) {
+      flyingBirds[index].birdPositionX = width + rightBirdSprite.width;
+      flyingBirds[index].birdVelocityX = 0;
+      flyingBirds[index].birdVelocityY = 0;
+    } else if (!flyingBirds[index].isRightBird && flyingBirds[index].birdPositionX > width) {
+      flyingBirds[index].birdPositionX = -leftBirdSprite.width - 10;
+      flyingBirds[index].birdVelocityX = 0;
+      flyingBirds[index].birdVelocityY = 0;
     }
-    if (birds[index].birdPositionY > height * 0.65) {
-      birds[index].birdPositionY = height * 0.65;
-    } else if (birds[index].birdPositionY < 0) {
-      birds[index].birdPositionY = 0;
+    if (flyingBirds[index].birdPositionY > height * 0.65) {
+      flyingBirds[index].birdPositionY = height * 0.65;
+    } else if (flyingBirds[index].birdPositionY < 0) {
+      flyingBirds[index].birdPositionY = 0;
     }
   }
 
@@ -186,14 +186,14 @@ function draw() {
       if (
         abs((current.positionX + shakerSprite.width * current.scale / 2) - current.targetX) < shakerSprite.width * current.scale / 2 &&
         abs(current.positionY - current.targetY) < shakerSprite.height * current.scale / 8) {
-        for (let index = 0; index < birds.length; index++) {
-          if (collideRectRect(current.positionX, current.positionY, current.scale * shakerSprite.width, current.scale * shakerSprite.height, birds[index].birdPositionX, birds[index].birdPositionY, leftBirdSprite.width, leftBirdSprite.height)) {
+        for (let index = 0; index < flyingBirds.length; index++) {
+          if (collideRectRect(current.positionX, current.positionY, current.scale * shakerSprite.width, current.scale * shakerSprite.height, flyingBirds[index].birdPositionX, flyingBirds[index].birdPositionY, leftBirdSprite.width, leftBirdSprite.height)) {
             console.log('hit!');
             score++;
             //TODO: add new fallingBird to fallingBird array with position of this one
-            
+
             //deletes bird from array
-            birds.splice(index, 1);
+            flyingBirds.splice(index, 1);
           }
         }
         thrownShakers.splice(shaker, 1);
