@@ -18,7 +18,7 @@ body {
 }
 
 #title {
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   text-align: center;
   opacity: 0;
 }
@@ -30,7 +30,10 @@ body {
 }
 
 #description {
-  margin-bottom: 50px;
   text-align: center;
   opacity: 0;
+}
+
+#leadText {
+  margin-bottom: 40px;
 }
