@@ -233,8 +233,10 @@ function draw() {
       image(leftFallingBirdSpriteImage, fallingBirds[index].birdPositionX, fallingBirds[index].birdPositionY);
     }
 
-    fallingBirds[index].birdPositionY += fallingBirds[index].birdVelocityY;
-    fallingBirds[index].birdVelocityY += 0.3;
+    if(fallingBirds[index].birdPositionY < 400){
+      fallingBirds[index].birdPositionY += fallingBirds[index].birdVelocityY;
+      fallingBirds[index].birdVelocityY += 0.3;
+    }
   }
 
   if (getMouseAngle() !== 'Mouse out of bounds') {
