@@ -112,11 +112,11 @@ function preload() {
     rightFallingBirdSpriteImage = loadImage('./res/images/rightbuffbird.png');
     leftFallingBirdSpriteImage = loadImage('./res/images/leftbuffbird.png');
 
-    rightWalkingBirdSprite = loadGif('./res/images/rightbuffbirdmove.gif');
-    rightWalkingBirdSpriteImage = loadImage('./res/images/rightbuffbirdmove.gif');
+    rightWalkingBirdSprite = loadGif('./res/images/rightbuffbird.gif');
+    rightWalkingBirdSpriteImage = loadImage('./res/images/rightbuffbird.gif');
 
-    leftWalkingBirdSprite = loadGif('./res/images/leftbuffbirdmove.gif');
-    leftWalkingBirdSpriteImage = loadImage('./res/images/leftbuffbirdmove.gif');
+    leftWalkingBirdSprite = loadGif('./res/images/leftbuffbird.gif');
+    leftWalkingBirdSpriteImage = loadImage('./res/images/leftbuffbird.gif');
 
     backgroundImage = loadImage('./res/images/background.png');
     shakerSprite = loadImage('./res/images/shaker.png');
@@ -130,11 +130,11 @@ function preload() {
     rightFallingBirdSpriteImage = loadImage('./res/images/rightbuffbird.png');
     leftFallingBirdSpriteImage = loadImage('./res/images/leftbuffbird.png');
 
-    rightWalkingBirdSprite = loadGif('./res/images/buffbirdmove.gif');
-    rightWalkingBirdSpriteImage = loadImage('./res/images/buffbirdmove.gif');
+    rightWalkingBirdSprite = loadGif('./res/images/rightbuffbird.gif');
+    rightWalkingBirdSpriteImage = loadImage('./res/images/rightbuffbird.gif');
 
-    leftWalkingBirdSprite = loadGif('./res/images/leftbuffbirdmove.gif');
-    leftWalkingBirdSpriteImage = loadImage('./res/images/leftbuffbirdmove.gif');
+    leftWalkingBirdSprite = loadGif('./res/images/leftbuffbird.gif');
+    leftWalkingBirdSpriteImage = loadImage('./res/images/leftbuffbird.gif');
 
     backgroundImage = loadImage('./res/images/background.png');
     shakerSprite = loadImage('./res/images/shaker.png');
@@ -263,7 +263,7 @@ function draw() {
       image(rightWalkingBirdSprite, walkingBirds[index].birdPositionX, walkingBirds[index].birdPositionY);
       walkingBirds[index].birdPositionX -= 1;
     } else {
-      image(rightWalkingBirdSprite, walkingBirds[index].birdPositionX, walkingBirds[index].birdPositionY);
+      image(leftWalkingBirdSprite, walkingBirds[index].birdPositionX, walkingBirds[index].birdPositionY);
       walkingBirds[index].birdPositionX += 1;
     }
   }
