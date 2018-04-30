@@ -44,6 +44,9 @@ let thrownShakers;
 let shakerSprite;
 let mouseAngle;
 
+let flopSound;
+let thudSound;
+
 let level = 0;
 
 let startBirdNumber;
@@ -113,6 +116,8 @@ function newBird() {
 
 function preload() {
   crosshairImage = loadImage('./res/images/crosshair.png');
+  flopSound = loadSound('./res/sounds/pop.wav');
+  thudSound = loadSound('./res/sounds/thud.wav');
   if (level === 0) {
     leftBirdSprite = loadGif('./res/images/leftbird.gif');
     rightBirdSprite = loadGif('./res/images/rightbird.gif');
@@ -307,6 +312,7 @@ function draw() {
         fallingBirds[index].isRightBird
       ));
       fallingBirds.splice(index, 1);
+      thudSound.play();
     }
   }
 
@@ -417,6 +423,7 @@ function mouseClicked() {
       -dist(anchorX, anchorY, mouseX, mouseY)
     ));
     shakerCount--;
+    flopSound.play();
   }
 
   if (shakerCount <= 0 && thrownShakers.length <= 0 && score < 7) {
