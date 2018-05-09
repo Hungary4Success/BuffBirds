@@ -183,7 +183,7 @@ function draw() {
   background(backgroundImage);
 
   if (shakerCount <= 0) {
-    if (score === 7) {
+    if (score >= 5) {
       score = 0;
       shakerCount = 7;
       birdVelocityXMean += 0.01;
@@ -419,7 +419,7 @@ function mouseClicked() {
     shakerCount--;
   }
 
-  if (shakerCount <= 0 && thrownShakers.length <= 0 && score < 7) {
+  if (shakerCount <= 0 && thrownShakers.length <= 0 && score < 5) {
     score = 0;
     level = 0;
     shakerCount = 7;
