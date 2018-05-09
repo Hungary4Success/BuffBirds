@@ -3,9 +3,25 @@
 'use strict';
 
 function init() {
+  const versionRegex = new RegExp('Chrome/(\\d*).\\d*.\\d*.\\d* ');
+  const versionGroups = navigator.userAgent.match(versionRegex);
+
+  const titleElement = document.getElementById('title');
+  const descriptionElement = document.getElementById('description');
+  if (!versionGroups || parseInt(versionGroups[1], 10) > 65) {
+    titleElement.innerText = 'Not supported browser';
+    titleElement.style.opacity = 1;
+
+    descriptionElement.innerText = 'Use Chrome/Chromium 65 or below.';
+    descriptionElement.style.opacity = 1;
+
+    const leadText = document.getElementById('leadText');
+    leadText.innerText = '';
+    return;
+  }
+
   let errorName;
   let errorDescription;
-
 
   const { pathname } = window.location;
   let errorCode = parseInt(pathname.substring(1, pathname.length), 10);
@@ -38,11 +54,9 @@ function init() {
       break;
   }
 
-  const titleElement = document.getElementById('title');
   titleElement.innerText = errorName;
   titleElement.style.opacity = 1;
 
-  const descriptionElement = document.getElementById('description');
   descriptionElement.innerText = errorDescription;
   descriptionElement.style.opacity = 1;
 }

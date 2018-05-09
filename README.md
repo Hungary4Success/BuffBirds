@@ -2,4 +2,4 @@
 drink ur protein
 
 Live on https://buff-birds.herokuapp.com/
-(Linux and Google Chrome/Chromium required)
+(Google Chrome/Chromium version 65 or below required)
